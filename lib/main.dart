@@ -52,7 +52,11 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    var h = (MediaQuery.of(context).size.height - 88) / 4.5;
+    //var h = (MediaQuery.of(context).size.height - 88) / 4.5;
+    //var h = (MediaQuery.of(context).size.height - 88) * .2;
+    var statusBarHeight = MediaQuery.of(context).padding.top;
+    var h = (MediaQuery.of(context).size.height - statusBarHeight) * .2;
+
     var w = MediaQuery.of(context).size.width;
     log('height in top: $h');
     // This method is rerun every time setState is called, for instance as done
@@ -97,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
           title: Text(widget.title),
         ),
         body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Stack(
 
@@ -105,11 +109,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
                 ClipPath(
                     clipper: MyCustomClipper(
-                        (MediaQuery.of(context).size.height - 88) / 4.5,
+                        h,
                         MediaQuery.of(context).size.width),
                     child: Container(
                       width: MediaQuery.of(context).size.width,
-                      height: (MediaQuery.of(context).size.height - 88) / 4.5,
+                      height: h,
                       color: Colors.blue,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -131,7 +135,10 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
 
-            Align(
+            Expanded(
+
+
+            child: Align(
                 alignment: Alignment.centerLeft,
                 child: Padding(
                   padding: EdgeInsets.all(16.0),
@@ -156,13 +163,32 @@ class _MyHomePageState extends State<MyHomePage> {
                             text: ' Finans',
                             style: new TextStyle(
                                 color: Colors.blue,
-                                fontWeight: FontWeight.bold)),
+                                fontWeight: FontWeight.bold)
+                        ),
+                        new TextSpan(
+                          // Note: Styles for TextSpans must be explicitly defined.
+                          // Child text spans will inherit styles from parent
+                          style: new TextStyle(
+                              fontSize: 16.0,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold
+                          ),
+                          children: <TextSpan>[
+                            //, style: new TextStyle(fontWeight: FontWeight.bold, )
+                            new TextSpan(
+                                text: '\n\nWelcome to The Bank of The Future. '
+                                    'Manage and track your accounts on the go.'),
+                          ],
+                        ),
+
                       ],
                     ),
                   ),
-                )),
+                )
+            )
+            ),
 
-            Align(
+            /*Align(
                 alignment: Alignment.centerLeft,
                 child: Padding(
                   padding: EdgeInsets.all(20.0),
@@ -178,16 +204,17 @@ class _MyHomePageState extends State<MyHomePage> {
                       children: <TextSpan>[
                         //, style: new TextStyle(fontWeight: FontWeight.bold, )
                         new TextSpan(
-                            text: 'Welcome to The Bank of The Future.\n'
-                                'Manage and track your accounts\non the go.'),
+                            text: 'Welcome to The Bank of The Future. '
+                                'Manage and track your accounts on the go.'),
                       ],
                     ),
                   ),
-                )),
+                )),*/
 
             Padding(
               padding: EdgeInsets.all(16.0),
               child: TextField(
+                  keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
                       enabledBorder: const OutlineInputBorder(
                           borderSide:
@@ -199,24 +226,28 @@ class _MyHomePageState extends State<MyHomePage> {
                       labelText: 'Email')),
             ),
 
-            Expanded(
-                child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: SizedBox(
-                        width: double.infinity,
-                        child: Container(
-                          padding: EdgeInsets.fromLTRB(16, 1, 16, 1),
-                          child: MaterialButton(
-                              splashColor: Colors.blueAccent,
-                              color: Colors.lightBlue,
-                              onPressed: () => {},
-                              child: Text('Next')),
-                        ))
 
-                    //minWidth: double.maxFinite,
 
-                    )),
-            //),
+
+                Expanded(
+                    child: Align(
+                        alignment: Alignment.bottomCenter,
+
+                      child: Container(
+
+                            width: w,
+                            //color: Colors.red,
+                            padding: EdgeInsets.fromLTRB(16, 1, 16, 1),
+                            child: MaterialButton(
+                                splashColor: Colors.blueAccent,
+                                color: Colors.lightBlue,
+                                onPressed: () => {},
+                                child: Text('Next')),
+                      ),
+
+                    )
+                ),
+
           ],
         ));
   }
