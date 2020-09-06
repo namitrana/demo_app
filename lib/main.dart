@@ -49,7 +49,10 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage>{
+
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     //var h = (MediaQuery.of(context).size.height - 88) / 4.5;
@@ -100,156 +103,154 @@ class _MyHomePageState extends State<MyHomePage> {
           // the App.build method, and use it to set our appbar title.
           title: Text(widget.title),
         ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Stack(
-
+        body:  Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
+                Stack(
 
-                ClipPath(
-                    clipper: MyCustomClipper(
-                        h,
-                        MediaQuery.of(context).size.width),
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: h,
-                      color: Colors.blue,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                         _getRoundContainer('1'),
-                          _getHorizontalLine(),
-                          _getRoundContainer('2'),
-                          _getHorizontalLine(),
-                          _getRoundContainer('3'),
-                          _getHorizontalLine(),
-                          _getRoundContainer('4'),
+                  children: <Widget>[
 
-                        ],
-                      ),
+                    ClipPath(
+                        clipper: MyCustomClipper(
+                            h,
+                            MediaQuery.of(context).size.width),
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: h,
+                          color: Colors.blue,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              _getRoundContainer('1'),
+                              _getHorizontalLine(),
+                              _getRoundContainer('2'),
+                              _getHorizontalLine(),
+                              _getRoundContainer('3'),
+                              _getHorizontalLine(),
+                              _getRoundContainer('4'),
+
+                            ],
+                          ),
+                        )
+                    ),
+
+                  ],
+                ),
+
+                Expanded(
+
+
+                    child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: EdgeInsets.all(16.0),
+                          child: RichText(
+                            text: new TextSpan(
+                              // Note: Styles for TextSpans must be explicitly defined.
+                              // Child text spans will inherit styles from parent
+                              style: new TextStyle(
+                                fontSize: 24.0,
+                                color: Colors.black,
+                              ),
+                              children: <TextSpan>[
+                                new TextSpan(
+                                    text: 'Welcome to\n',
+                                    style: new TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                                new TextSpan(
+                                    text: 'GIN',
+                                    style: new TextStyle(fontWeight: FontWeight.bold)),
+                                new TextSpan(
+                                    text: ' Finans',
+                                    style: new TextStyle(
+                                        color: Colors.blue,
+                                        fontWeight: FontWeight.bold)
+                                ),
+                                new TextSpan(
+                                  // Note: Styles for TextSpans must be explicitly defined.
+                                  // Child text spans will inherit styles from parent
+                                  style: new TextStyle(
+                                      fontSize: 16.0,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold
+                                  ),
+                                  children: <TextSpan>[
+                                    //, style: new TextStyle(fontWeight: FontWeight.bold, )
+                                    new TextSpan(
+                                        text: '\n\nWelcome to The Bank of The Future.'
+                                            '\nManage and track your accounts\non the go.'),
+                                  ],
+                                ),
+
+                              ],
+                            ),
+                          ),
+                        )
                     )
                 ),
 
-              ],
-            ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(16, 3, 16, 3),
 
-            Expanded(
-
-
-            child: Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: RichText(
-                    text: new TextSpan(
-                      // Note: Styles for TextSpans must be explicitly defined.
-                      // Child text spans will inherit styles from parent
-                      style: new TextStyle(
-                        fontSize: 24.0,
-                        color: Colors.black,
-                      ),
-                      children: <TextSpan>[
-                        new TextSpan(
-                            text: 'Welcome to\n',
-                            style: new TextStyle(
-                              fontWeight: FontWeight.bold,
-                            )),
-                        new TextSpan(
-                            text: 'GIN',
-                            style: new TextStyle(fontWeight: FontWeight.bold)),
-                        new TextSpan(
-                            text: ' Finans',
-                            style: new TextStyle(
-                                color: Colors.blue,
-                                fontWeight: FontWeight.bold)
-                        ),
-                        new TextSpan(
-                          // Note: Styles for TextSpans must be explicitly defined.
-                          // Child text spans will inherit styles from parent
-                          style: new TextStyle(
-                              fontSize: 16.0,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold
-                          ),
-                          children: <TextSpan>[
-                            //, style: new TextStyle(fontWeight: FontWeight.bold, )
-                            new TextSpan(
-                                text: '\n\nWelcome to The Bank of The Future. '
-                                    'Manage and track your accounts on the go.'),
-                          ],
-                        ),
-
-                      ],
-                    ),
-                  ),
-                )
-            )
-            ),
-
-            /*Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: EdgeInsets.all(20.0),
-                  child: RichText(
-                    text: new TextSpan(
-                      // Note: Styles for TextSpans must be explicitly defined.
-                      // Child text spans will inherit styles from parent
-                      style: new TextStyle(
-                        fontSize: 16.0,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold
-                      ),
-                      children: <TextSpan>[
-                        //, style: new TextStyle(fontWeight: FontWeight.bold, )
-                        new TextSpan(
-                            text: 'Welcome to The Bank of The Future. '
-                                'Manage and track your accounts on the go.'),
-                      ],
-                    ),
-                  ),
-                )),*/
-
-            Padding(
-              padding: EdgeInsets.all(16.0),
-              child: TextField(
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
-                      enabledBorder: const OutlineInputBorder(
-                          borderSide:
+                  child: TextFormField(
+                      autovalidate: true,
+                      validator: (email) {
+                        if (email.isEmpty) {
+                          return 'Please enter some text';
+                        }else if(email.isNotEmpty){
+                          bool emailValid = RegExp(r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$').hasMatch(email);
+                          if(!emailValid){
+                            return 'Please enter valie email id';
+                          }
+                        }
+                        return null;
+                      },
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: InputDecoration(
+                          enabledBorder: const OutlineInputBorder(
+                              borderSide:
                               const BorderSide(color: Colors.white, width: 5),
-                          borderRadius: const BorderRadius.all(
-                              const Radius.circular(10.0))),
-                      prefixIcon: Icon(Icons.email),
-                      //border: InputBorder.none
-                      labelText: 'Email')),
-            ),
+                              borderRadius: const BorderRadius.all(
+                                  const Radius.circular(10.0))),
+                          prefixIcon: Icon(Icons.email),
+                          //border: InputBorder.none
+                          labelText: 'Email')),
+                ),
 
 
 
 
                 Expanded(
                     child: Align(
-                        alignment: Alignment.bottomCenter,
-
+                      alignment: Alignment.bottomCenter,
                       child: Container(
 
-                            width: w,
-                            //color: Colors.red,
-                            padding: EdgeInsets.fromLTRB(16, 1, 16, 1),
-                            child: MaterialButton(
-                                splashColor: Colors.blueAccent,
-                                color: Colors.lightBlue,
-                                onPressed: () => {},
-                                child: Text('Next')),
+                        width: w,
+                        //color: Colors.red,
+                        padding: EdgeInsets.fromLTRB(16, 1, 16, 1),
+                        child: MaterialButton(
+                            splashColor: Colors.blueAccent,
+                            color: Colors.lightBlue,
+                            onPressed: () => {
+                              if(_formKey.currentState.validate()){
+                                  log('Email is successful')
+                              }
+                            },
+                            child: Text('Next')
+                        ),
                       ),
 
                     )
                 ),
 
-          ],
-        ));
+              ],
+            )//column,
+        )
+    );
   }
 }
 
