@@ -2,6 +2,7 @@
 
 import 'dart:ui';
 
+import 'package:demo_app/ProgressWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer';
@@ -59,7 +60,6 @@ class _MyHomePageState extends State<MyHomePage>{
     //var h = (MediaQuery.of(context).size.height - 88) * .2;
     var statusBarHeight = MediaQuery.of(context).padding.top;
     var h = (MediaQuery.of(context).size.height - statusBarHeight) * .2;
-
     var w = MediaQuery.of(context).size.width;
     log('height in top: $h');
     // This method is rerun every time setState is called, for instance as done
@@ -120,7 +120,7 @@ class _MyHomePageState extends State<MyHomePage>{
                           width: MediaQuery.of(context).size.width,
                           height: h,
                           color: Colors.blue,
-                          child: Row(
+                          child: new ProgressWidget()/*Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
@@ -133,7 +133,7 @@ class _MyHomePageState extends State<MyHomePage>{
                               _getRoundContainer('4'),
 
                             ],
-                          ),
+                          ),*/
                         )
                     ),
 
