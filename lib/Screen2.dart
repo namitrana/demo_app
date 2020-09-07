@@ -2,15 +2,13 @@
 import 'dart:ui';
 
 import 'package:demo_app/ProgressWidget.dart';
-import 'package:demo_app/Screen2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer';
 
-void main() => runApp(MyApp());
+void main() => runApp(Screen2());
 
-class MyApp extends StatelessWidget {
-
+class Screen2 extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -28,7 +26,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Demo App'),
+      home: MyHomePage(title: 'Create Account'),
     );
   }
 }
@@ -51,8 +49,7 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage>{
-
+class _MyHomePageState extends State<MyHomePage> {
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -70,28 +67,25 @@ class _MyHomePageState extends State<MyHomePage>{
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
 
-     Widget _getRoundContainer(var text){
-       return Container(
-         decoration: BoxDecoration(
-             color: Colors.white,
-             shape: BoxShape.circle
-         ),
-         width: (h-(h*.5)) / 2,
-         height: (h-(h*.5)) / 2,
-         //color: Colors.red,
-         child: Center(
-           child: new Text(text),
-         )
-       );
-     }
+    Widget _getRoundContainer(var text) {
+      return Container(
+          decoration:
+              BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+          width: (h - (h * .5)) / 2,
+          height: (h - (h * .5)) / 2,
+          //color: Colors.red,
+          child: Center(
+            child: new Text(text),
+          ));
+    }
 
-    Widget _getHorizontalLine(){
-     var circlesWidth = ((h-(h*.5)) / 2) * 4;
-     var remainWidth = w - circlesWidth;
-     var lineWidth = remainWidth / 6;
+    Widget _getHorizontalLine() {
+      var circlesWidth = ((h - (h * .5)) / 2) * 4;
+      var remainWidth = w - circlesWidth;
+      var lineWidth = remainWidth / 6;
       return Container(
         decoration: BoxDecoration(
-            color: Colors.black,
+          color: Colors.black,
         ),
         width: lineWidth,
         height: 2,
@@ -104,24 +98,22 @@ class _MyHomePageState extends State<MyHomePage>{
           // the App.build method, and use it to set our appbar title.
           title: Text(widget.title),
         ),
-        body:  Form(
+        body: Form(
             key: _formKey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                Stack(
-
-                  children: <Widget>[
-
+                /*Stack(
+                  children: <Widget>[*/
                     ClipPath(
                         clipper: MyCustomClipper(
-                            h,
-                            MediaQuery.of(context).size.width),
+                            h, MediaQuery.of(context).size.width),
                         child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: h,
-                          color: Colors.blue,
-                          child: new ProgressWidget()/*Row(
+                            width: MediaQuery.of(context).size.width,
+                            height: h,
+                            color: Colors.blue,
+                            child:
+                                new ProgressWidget() /*Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
@@ -135,15 +127,11 @@ class _MyHomePageState extends State<MyHomePage>{
 
                             ],
                           ),*/
-                        )
+                            )
                     ),
-
-                  ],
-                ),
-
+                  /*],
+                ),*/
                 Expanded(
-
-
                     child: Align(
                         alignment: Alignment.centerLeft,
                         child: Padding(
@@ -164,47 +152,44 @@ class _MyHomePageState extends State<MyHomePage>{
                                     )),
                                 new TextSpan(
                                     text: 'GIN',
-                                    style: new TextStyle(fontWeight: FontWeight.bold)),
+                                    style: new TextStyle(
+                                        fontWeight: FontWeight.bold)),
                                 new TextSpan(
                                     text: ' Finans',
                                     style: new TextStyle(
                                         color: Colors.blue,
-                                        fontWeight: FontWeight.bold)
-                                ),
+                                        fontWeight: FontWeight.bold)),
                                 new TextSpan(
                                   // Note: Styles for TextSpans must be explicitly defined.
                                   // Child text spans will inherit styles from parent
                                   style: new TextStyle(
                                       fontSize: 16.0,
                                       color: Colors.black,
-                                      fontWeight: FontWeight.bold
-                                  ),
+                                      fontWeight: FontWeight.bold),
                                   children: <TextSpan>[
                                     //, style: new TextStyle(fontWeight: FontWeight.bold, )
                                     new TextSpan(
-                                        text: '\n\nWelcome to The Bank of The Future.'
+                                        text:
+                                            '\n\nWelcome to The Bank of The Future.'
                                             '\nManage and track your accounts\non the go.'),
                                   ],
                                 ),
-
                               ],
                             ),
                           ),
-                        )
-                    )
-                ),
-
+                        ))),
                 Padding(
                   padding: EdgeInsets.fromLTRB(16, 3, 16, 3),
-
                   child: TextFormField(
                       autovalidate: true,
                       validator: (email) {
                         if (email.isEmpty) {
                           return 'Please enter some text';
-                        }else if(email.isNotEmpty){
-                          bool emailValid = RegExp(r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$').hasMatch(email);
-                          if(!emailValid){
+                        } else if (email.isNotEmpty) {
+                          bool emailValid = RegExp(
+                                  r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
+                              .hasMatch(email);
+                          if (!emailValid) {
                             return 'Please enter valid email id';
                           }
                         }
@@ -213,49 +198,40 @@ class _MyHomePageState extends State<MyHomePage>{
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
                           enabledBorder: const OutlineInputBorder(
-                              borderSide:
-                              const BorderSide(color: Colors.white, width: 5),
+                              borderSide: const BorderSide(
+                                  color: Colors.white, width: 5),
                               borderRadius: const BorderRadius.all(
                                   const Radius.circular(10.0))),
                           prefixIcon: Icon(Icons.email),
                           //border: InputBorder.none
                           labelText: 'Email')),
                 ),
-
-
-
-
                 Expanded(
                     child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Container(
-
-                        width: w,
-                        //color: Colors.red,
-                        padding: EdgeInsets.fromLTRB(16, 1, 16, 1),
-                        child: MaterialButton(
-                            splashColor: Colors.blueAccent,
-                            color: Colors.lightBlue,
-                            onPressed: () => {
-                              if(_formKey.currentState.validate()){
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    width: w,
+                    //color: Colors.red,
+                    padding: EdgeInsets.fromLTRB(16, 1, 16, 1),
+                    child: MaterialButton(
+                        splashColor: Colors.blueAccent,
+                        color: Colors.lightBlue,
+                        onPressed: () => {
+                              if (_formKey.currentState.validate())
+                                {
                                   //log('Email is successful')
-                                  Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => Screen2()),
-                                  )
-                              }
+                                  /* Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => Screen2()),
+    );*/
+                                }
                             },
-                            child: Text('Next')
-                        ),
-                      ),
-
-                    )
-                ),
-
+                        child: Text('Next')),
+                  ),
+                )),
               ],
-            )//column,
-        )
-    );
+            ) //column,
+            ));
   }
 }
 
@@ -273,7 +249,8 @@ class MyCustomClipper extends CustomClipper<Path> {
     var path = new Path();
     path.lineTo(0, h);
     //var firstControlPoint = new Offset(size.width / 12, h / 4);
-    var firstControlPoint = new Offset(size.width - (size.width * .95), h - (h * .5));
+    var firstControlPoint =
+        new Offset(size.width - (size.width * .95), h - (h * .5));
     var firstEndPoint = new Offset(size.width, h);
     path.quadraticBezierTo(firstControlPoint.dx, firstControlPoint.dy,
         firstEndPoint.dx, firstEndPoint.dy);
