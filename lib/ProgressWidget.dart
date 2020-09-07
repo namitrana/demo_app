@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 
 class ProgressWidget extends StatelessWidget {
 
-
+    int greenText = 0;
+    ProgressWidget(int greenText){
+        this.greenText = greenText;
+    }
 
   @override
   Widget build(BuildContext context) {
@@ -12,17 +15,18 @@ class ProgressWidget extends StatelessWidget {
     var h = (MediaQuery.of(context).size.height - statusBarHeight) * .2;
     var w = MediaQuery.of(context).size.width;
 
-    Widget _getRoundContainer(var text){
+
+    Widget _getRoundContainer(int text){
       return Container(
           decoration: BoxDecoration(
-              color: Colors.white,
+              color: text > greenText ? Colors.white : Colors.green,
               shape: BoxShape.circle
           ),
           width: (h-(h*.5)) / 2,
           height: (h-(h*.5)) / 2,
           //color: Colors.red,
           child: Center(
-            child: new Text(text),
+            child: new Text(text.toString()),
           )
       );
     }
@@ -49,13 +53,14 @@ class ProgressWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          _getRoundContainer('1'),
+
+          _getRoundContainer(1),
           _getHorizontalLine(),
-          _getRoundContainer('2'),
+          _getRoundContainer(2),
           _getHorizontalLine(),
-          _getRoundContainer('3'),
+          _getRoundContainer(3),
           _getHorizontalLine(),
-          _getRoundContainer('4'),
+          _getRoundContainer(4),
 
         ],
       ),

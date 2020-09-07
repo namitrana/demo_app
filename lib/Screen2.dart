@@ -52,6 +52,13 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final _formKey = GlobalKey<FormState>();
 
+  bool isPasswordVisible;
+
+  @override
+  void initState(){
+    isPasswordVisible = false;
+  }
+
   @override
   Widget build(BuildContext context) {
     //var h = (MediaQuery.of(context).size.height - 88) / 4.5;
@@ -73,7 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
               BoxDecoration(color: Colors.white, shape: BoxShape.circle),
           width: (h - (h * .5)) / 2,
           height: (h - (h * .5)) / 2,
-          //color: Colors.red,
+
           child: Center(
             child: new Text(text),
           ));
@@ -100,120 +107,186 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         body: Form(
             key: _formKey,
+            child: Container(
+              color: Colors.blue,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
+
               children: <Widget>[
                 /*Stack(
                   children: <Widget>[*/
-                    ClipPath(
+                   /* ClipPath(
                         clipper: MyCustomClipper(
-                            h, MediaQuery.of(context).size.width),
-                        child: Container(
+                            h, MediaQuery.of(context).size.width),*/
+                        /*child:*/ Container(
                             width: MediaQuery.of(context).size.width,
                             height: h,
                             color: Colors.blue,
                             child:
-                                new ProgressWidget() /*Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              _getRoundContainer('1'),
-                              _getHorizontalLine(),
-                              _getRoundContainer('2'),
-                              _getHorizontalLine(),
-                              _getRoundContainer('3'),
-                              _getHorizontalLine(),
-                              _getRoundContainer('4'),
+                                new ProgressWidget(2)
+                            ),
+                   // ),
 
-                            ],
-                          ),*/
-                            )
-                    ),
-                  /*],
-                ),*/
-                Expanded(
-                    child: Align(
+                /*Expanded(
+                  child: Container(
+                    color: Colors.blue,
+                    child:*/ Align(
                         alignment: Alignment.centerLeft,
+
                         child: Padding(
                           padding: EdgeInsets.all(16.0),
                           child: RichText(
+
                             text: new TextSpan(
                               // Note: Styles for TextSpans must be explicitly defined.
                               // Child text spans will inherit styles from parent
                               style: new TextStyle(
                                 fontSize: 24.0,
-                                color: Colors.black,
+                                color: Colors.white,
                               ),
                               children: <TextSpan>[
                                 new TextSpan(
-                                    text: 'Welcome to\n',
+                                    text: 'Create Password\n',
                                     style: new TextStyle(
                                       fontWeight: FontWeight.bold,
                                     )),
-                                new TextSpan(
-                                    text: 'GIN',
-                                    style: new TextStyle(
-                                        fontWeight: FontWeight.bold)),
-                                new TextSpan(
-                                    text: ' Finans',
-                                    style: new TextStyle(
-                                        color: Colors.blue,
-                                        fontWeight: FontWeight.bold)),
+
                                 new TextSpan(
                                   // Note: Styles for TextSpans must be explicitly defined.
                                   // Child text spans will inherit styles from parent
                                   style: new TextStyle(
                                       fontSize: 16.0,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold),
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.normal),
                                   children: <TextSpan>[
                                     //, style: new TextStyle(fontWeight: FontWeight.bold, )
                                     new TextSpan(
                                         text:
-                                            '\n\nWelcome to The Bank of The Future.'
-                                            '\nManage and track your accounts\non the go.'),
+                                            'Password will be used to login to account'),
                                   ],
                                 ),
                               ],
                             ),
                           ),
-                        ))),
+                        )
+                    ),
+                //),
+                //),
                 Padding(
-                  padding: EdgeInsets.fromLTRB(16, 3, 16, 3),
-                  child: TextFormField(
-                      autovalidate: true,
-                      validator: (email) {
-                        if (email.isEmpty) {
+                  padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
+                  /*child: Container(
+                    color: Colors.blue,*/
+                  child: TextField(
+                      /*autovalidate: true,
+
+                      validator: (password) {
+                        if (password.isEmpty) {
                           return 'Please enter some text';
-                        } else if (email.isNotEmpty) {
-                          bool emailValid = RegExp(
-                                  r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
-                              .hasMatch(email);
-                          if (!emailValid) {
-                            return 'Please enter valid email id';
-                          }
+                        } else if(password.length < 6){
+                          return 'Password must have 6 or more characters';
                         }
-                        return null;
-                      },
-                      keyboardType: TextInputType.emailAddress,
+                      },*/
+                      keyboardType: TextInputType.text,
+                      obscureText: isPasswordVisible,
+
                       decoration: InputDecoration(
-                          enabledBorder: const OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  color: Colors.white, width: 5),
-                              borderRadius: const BorderRadius.all(
-                                  const Radius.circular(10.0))),
-                          prefixIcon: Icon(Icons.email),
-                          //border: InputBorder.none
-                          labelText: 'Email')),
+                          hintText: 'Create Password',
+                          hintStyle: TextStyle(color: Colors.grey),
+                          fillColor: Colors.white,
+                          filled: true,
+
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                        /*border: OutlineInputBorder(
+                          // width: 0.0 produces a thin "hairline" border
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                            borderSide: BorderSide(color: Colors.white)
+                            //borderSide: BorderSide.none
+                          borderSide: const BorderSide(),
+                        ),*/
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              // Based on passwordVisible state choose the icon
+                              isPasswordVisible
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: Theme.of(context).primaryColorDark,
+                            ),
+                            onPressed: () {
+                              // Update the state i.e. toogle the state of passwordVisible variable
+                              setState(() {
+                                isPasswordVisible = !isPasswordVisible;
+                              });
+                            },
+                          ),
+                          //border: InputBorder.
+                          )
+                  )
+                  //),
+
                 ),
+
+                Align(
+                    alignment: Alignment.centerLeft,
+
+                    child: Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: RichText(
+
+                        text: new TextSpan(
+                          // Note: Styles for TextSpans must be explicitly defined.
+                          // Child text spans will inherit styles from parent
+                          style: new TextStyle(
+                            fontSize: 24.0,
+                            color: Colors.white,
+                          ),
+                          children: <TextSpan>[
+
+                            new TextSpan(
+                              // Note: Styles for TextSpans must be explicitly defined.
+                              // Child text spans will inherit styles from parent
+                              style: new TextStyle(
+                                  fontSize: 14.0,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.normal),
+                              children: <TextSpan>[
+                                //, style: new TextStyle(fontWeight: FontWeight.bold, )
+                                new TextSpan(
+
+                                    text: 'Complexity: '
+                                ),
+                                new TextSpan(
+                                    text: ' Very Weak',
+                                    style: new TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.brown,
+                                        fontWeight: FontWeight.bold)
+                                ),
+
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                ),
+
+
+
                 Expanded(
                     child: Align(
                   alignment: Alignment.bottomCenter,
                   child: Container(
                     width: w,
-                    //color: Colors.red,
+
                     padding: EdgeInsets.fromLTRB(16, 1, 16, 1),
                     child: MaterialButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            side: BorderSide(color: Colors.lightBlue)
+                        ),
                         splashColor: Colors.blueAccent,
                         color: Colors.lightBlue,
                         onPressed: () => {
@@ -231,35 +304,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 )),
               ],
             ) //column,
-            ));
+            )
+      )
+    );
   }
 }
 
-class MyCustomClipper extends CustomClipper<Path> {
-  var h, w;
 
-  MyCustomClipper(double h1, double w1) {
-    h = h1;
-    w = w1;
-  }
-
-  @override
-  Path getClip(Size size) {
-    // TODO: implement getClip
-    var path = new Path();
-    path.lineTo(0, h);
-    //var firstControlPoint = new Offset(size.width / 12, h / 4);
-    var firstControlPoint =
-        new Offset(size.width - (size.width * .95), h - (h * .5));
-    var firstEndPoint = new Offset(size.width, h);
-    path.quadraticBezierTo(firstControlPoint.dx, firstControlPoint.dy,
-        firstEndPoint.dx, firstEndPoint.dy);
-    path.lineTo(size.width, 0);
-    path.lineTo(0, 0);
-    path.close();
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
-}

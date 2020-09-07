@@ -121,20 +121,7 @@ class _MyHomePageState extends State<MyHomePage>{
                           width: MediaQuery.of(context).size.width,
                           height: h,
                           color: Colors.blue,
-                          child: new ProgressWidget()/*Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              _getRoundContainer('1'),
-                              _getHorizontalLine(),
-                              _getRoundContainer('2'),
-                              _getHorizontalLine(),
-                              _getRoundContainer('3'),
-                              _getHorizontalLine(),
-                              _getRoundContainer('4'),
-
-                            ],
-                          ),*/
+                          child: new ProgressWidget(0)
                         )
                     ),
 
@@ -197,8 +184,8 @@ class _MyHomePageState extends State<MyHomePage>{
                 Padding(
                   padding: EdgeInsets.fromLTRB(16, 3, 16, 3),
 
-                  child: TextFormField(
-                      autovalidate: true,
+                  child: TextField(
+                      /*autovalidate: true,
                       validator: (email) {
                         if (email.isEmpty) {
                           return 'Please enter some text';
@@ -209,17 +196,21 @@ class _MyHomePageState extends State<MyHomePage>{
                           }
                         }
                         return null;
-                      },
+                      },*/
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
+                          hintText: 'Email',
+                          hintStyle: TextStyle(color: Colors.grey),
                           enabledBorder: const OutlineInputBorder(
                               borderSide:
-                              const BorderSide(color: Colors.white, width: 5),
+                              const BorderSide(color: Colors.white, width: 10),
                               borderRadius: const BorderRadius.all(
                                   const Radius.circular(10.0))),
                           prefixIcon: Icon(Icons.email),
                           //border: InputBorder.none
-                          labelText: 'Email')),
+                          //labelText: 'Email'
+                      )
+                  ),
                 ),
 
 
@@ -234,7 +225,11 @@ class _MyHomePageState extends State<MyHomePage>{
                         //color: Colors.red,
                         padding: EdgeInsets.fromLTRB(16, 1, 16, 1),
                         child: MaterialButton(
-                            splashColor: Colors.blueAccent,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                side: BorderSide(color: Colors.lightBlue)
+                            ),
+                            splashColor: Colors.lightBlue,
                             color: Colors.lightBlue,
                             onPressed: () => {
                               if(_formKey.currentState.validate()){
