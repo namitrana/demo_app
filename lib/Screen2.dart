@@ -55,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
   bool isPasswordVisible;
 
   @override
-  void initState(){
+  void initState() {
     isPasswordVisible = false;
   }
 
@@ -74,29 +74,65 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
 
-    Widget _getRoundContainer(var text) {
-      return Container(
-          decoration:
-              BoxDecoration(color: Colors.white, shape: BoxShape.circle),
-          width: (h - (h * .5)) / 2,
-          height: (h - (h * .5)) / 2,
+    Widget getTextWidget(var topText, var bottomText) {
+      return Column(
+            // mainAxisAlignment: MainAxisAlignment.center,
+            //crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
 
-          child: Center(
-            child: new Text(text),
-          ));
-    }
+                RichText(
+                  textAlign: TextAlign.center,
+                  text: new TextSpan(
+                      style: new TextStyle(
+                          fontSize: 28.0,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                    text: topText
+                  ),
 
-    Widget _getHorizontalLine() {
-      var circlesWidth = ((h - (h * .5)) / 2) * 4;
-      var remainWidth = w - circlesWidth;
-      var lineWidth = remainWidth / 6;
-      return Container(
-        decoration: BoxDecoration(
-          color: Colors.black,
-        ),
-        width: lineWidth,
-        height: 2,
-      );
+                ),
+
+                /*RichText(
+                  textAlign: TextAlign.center,
+                  text: new TextSpan(
+                    children: <TextSpan>[
+                      new TextSpan(
+                        style: new TextStyle(
+                            fontSize: 28.0,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
+                        children: <TextSpan>[
+                          //, style: new TextStyle(fontWeight: FontWeight.bold, )
+                          new TextSpan(text: topText),
+
+                          new TextSpan(
+                          text: bottomText,
+                          style: new TextStyle(
+                              fontSize: 12,
+                              color: Colors.white,
+                              fontWeight: FontWeight.normal)),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),*/
+
+                RichText(
+                  textAlign: TextAlign.center,
+                  text: new TextSpan(
+                      text: bottomText,
+                      style: new TextStyle(
+                          fontSize: 12,
+                          color: Colors.white,
+                          fontWeight: FontWeight.normal)),
+                ),
+
+
+
+                //)
+              ]);
+
     }
 
     return Scaffold(
@@ -108,35 +144,31 @@ class _MyHomePageState extends State<MyHomePage> {
         body: Form(
             key: _formKey,
             child: Container(
-              color: Colors.blue,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-
-              children: <Widget>[
-                /*Stack(
+                color: Colors.blue,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    /*Stack(
                   children: <Widget>[*/
-                   /* ClipPath(
+                    /* ClipPath(
                         clipper: MyCustomClipper(
                             h, MediaQuery.of(context).size.width),*/
-                        /*child:*/ Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: h,
-                            color: Colors.blue,
-                            child:
-                                new ProgressWidget(2)
-                            ),
-                   // ),
+                    /*child:*/ Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: h,
+                        color: Colors.blue,
+                        child: new ProgressWidget(1)),
+                    // ),
 
-                /*Expanded(
+                    /*Expanded(
                   child: Container(
                     color: Colors.blue,
-                    child:*/ Align(
+                    child:*/
+                    Align(
                         alignment: Alignment.centerLeft,
-
                         child: Padding(
                           padding: EdgeInsets.all(16.0),
                           child: RichText(
-
                             text: new TextSpan(
                               // Note: Styles for TextSpans must be explicitly defined.
                               // Child text spans will inherit styles from parent
@@ -150,7 +182,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                     style: new TextStyle(
                                       fontWeight: FontWeight.bold,
                                     )),
-
                                 new TextSpan(
                                   // Note: Styles for TextSpans must be explicitly defined.
                                   // Child text spans will inherit styles from parent
@@ -168,16 +199,15 @@ class _MyHomePageState extends State<MyHomePage> {
                               ],
                             ),
                           ),
-                        )
-                    ),
-                //),
-                //),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
-                  /*child: Container(
+                        )),
+                    //),
+                    //),
+                    Padding(
+                        padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
+                        /*child: Container(
                     color: Colors.blue,*/
-                  child: TextField(
-                      /*autovalidate: true,
+                        child: TextField(
+                            /*autovalidate: true,
 
                       validator: (password) {
                         if (password.isEmpty) {
@@ -186,128 +216,125 @@ class _MyHomePageState extends State<MyHomePage> {
                           return 'Password must have 6 or more characters';
                         }
                       },*/
-                      keyboardType: TextInputType.text,
-                      obscureText: isPasswordVisible,
+                            keyboardType: TextInputType.text,
+                            obscureText: isPasswordVisible,
+                            decoration: InputDecoration(
+                              hintText: 'Create Password',
+                              hintStyle: TextStyle(color: Colors.grey),
+                              fillColor: Colors.white,
+                              filled: true,
 
-                      decoration: InputDecoration(
-                          hintText: 'Create Password',
-                          hintStyle: TextStyle(color: Colors.grey),
-                          fillColor: Colors.white,
-                          filled: true,
-
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
-                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                        ),
-                        /*border: OutlineInputBorder(
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10.0)),
+                              ),
+                              /*border: OutlineInputBorder(
                           // width: 0.0 produces a thin "hairline" border
                             borderRadius: BorderRadius.all(Radius.circular(10.0)),
                             borderSide: BorderSide(color: Colors.white)
                             //borderSide: BorderSide.none
                           borderSide: const BorderSide(),
                         ),*/
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              // Based on passwordVisible state choose the icon
-                              isPasswordVisible
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
-                              color: Theme.of(context).primaryColorDark,
-                            ),
-                            onPressed: () {
-                              // Update the state i.e. toogle the state of passwordVisible variable
-                              setState(() {
-                                isPasswordVisible = !isPasswordVisible;
-                              });
-                            },
-                          ),
-                          //border: InputBorder.
-                          )
-                  )
-                  //),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  // Based on passwordVisible state choose the icon
+                                  isPasswordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: Theme.of(context).primaryColorDark,
+                                ),
+                                onPressed: () {
+                                  // Update the state i.e. toogle the state of passwordVisible variable
+                                  setState(() {
+                                    isPasswordVisible = !isPasswordVisible;
+                                  });
+                                },
+                              ),
+                              //border: InputBorder.
+                            ))),
 
-                ),
-
-                Align(
-                    alignment: Alignment.centerLeft,
-
-                    child: Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: RichText(
-
-                        text: new TextSpan(
-                          // Note: Styles for TextSpans must be explicitly defined.
-                          // Child text spans will inherit styles from parent
-                          style: new TextStyle(
-                            fontSize: 24.0,
-                            color: Colors.white,
-                          ),
-                          children: <TextSpan>[
-
-                            new TextSpan(
-                              // Note: Styles for TextSpans must be explicitly defined.
-                              // Child text spans will inherit styles from parent
-                              style: new TextStyle(
-                                  fontSize: 14.0,
+                   /* Expanded(
+                      child: */Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: EdgeInsets.all(16.0),
+                            child: RichText(
+                              text: new TextSpan(
+                                // Note: Styles for TextSpans must be explicitly defined.
+                                // Child text spans will inherit styles from parent
+                                style: new TextStyle(
+                                  fontSize: 24.0,
                                   color: Colors.white,
-                                  fontWeight: FontWeight.normal),
-                              children: <TextSpan>[
-                                //, style: new TextStyle(fontWeight: FontWeight.bold, )
-                                new TextSpan(
-
-                                    text: 'Complexity: '
                                 ),
-                                new TextSpan(
-                                    text: ' Very Weak',
+                                children: <TextSpan>[
+                                  new TextSpan(
+                                    // Note: Styles for TextSpans must be explicitly defined.
+                                    // Child text spans will inherit styles from parent
                                     style: new TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.brown,
-                                        fontWeight: FontWeight.bold)
-                                ),
-
-                              ],
+                                        fontSize: 14.0,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.normal),
+                                    children: <TextSpan>[
+                                      //, style: new TextStyle(fontWeight: FontWeight.bold, )
+                                      new TextSpan(text: 'Complexity: '),
+                                      new TextSpan(
+                                          text: ' Very Weak',
+                                          style: new TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.orange,
+                                              fontWeight: FontWeight.bold)),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
-                          ],
-                        ),
-                      ),
-                    )
-                ),
+                          )),
+                    //),
 
+                    //
+                    /*Expanded(
+                      child: */
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        getTextWidget('a', "Lowercase"),
+                        getTextWidget('A', "Uppercase"),
+                        getTextWidget('123', "Number"),
+                        getTextWidget('9+', "Characters"),
+                      ],
+                    ),
+                    //),
 
-
-                Expanded(
-                    child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Container(
-                    width: w,
-
-                    padding: EdgeInsets.fromLTRB(16, 1, 16, 1),
-                    child: MaterialButton(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            side: BorderSide(color: Colors.lightBlue)
-                        ),
-                        splashColor: Colors.blueAccent,
-                        color: Colors.lightBlue,
-                        onPressed: () => {
-                              if (_formKey.currentState.validate())
-                                {
-                                  //log('Email is successful')
-                                  /* Navigator.push(
+                    Expanded(
+                        child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        width: w,
+                        padding: EdgeInsets.fromLTRB(16, 1, 16, 1),
+                        child: MaterialButton(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                side: BorderSide(color: Colors.lightBlue)),
+                            splashColor: Colors.blueAccent,
+                            color: Colors.lightBlue,
+                            onPressed: () => {
+                                  if (_formKey.currentState.validate())
+                                    {
+                                      //log('Email is successful')
+                                      /* Navigator.push(
     context,
     MaterialPageRoute(builder: (context) => Screen2()),
     );*/
-                                }
-                            },
-                        child: Text('Next')),
-                  ),
-                )),
-              ],
-            ) //column,
-            )
-      )
+                                    }
+                                },
+                            child: Text('Next')),
+                      ),
+                    )),
+                  ],
+                ) //column,
+                ))//form
     );
   }
 }
-
-
