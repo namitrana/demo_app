@@ -7,10 +7,11 @@ import 'package:demo_app/Screen2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:demo_app/Screen3.dart';
+import 'package:demo_app/Strings.dart';
 import 'dart:developer';
 
 void main() => runApp(
-    MaterialApp(title:  "Routing..",
+    MaterialApp(title:  Strings.HOME_PAGE_TITLE,
       initialRoute: '/',
       routes: {
         '/' : (context) => MyApp(),
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return  Scaffold(
 
-      body: MyHomePage(title: 'Demo App'),
+      body: MyHomePage(title: Strings.HOME_PAGE_TITLE),
     );
     /*return MaterialApp(
 
@@ -124,15 +125,15 @@ class _MyHomePageState extends State<MyHomePage>{
 
     String _validateEmail(var email){
       if (email.isEmpty) {
-        emailErrorText = 'Please enter some text';
+        emailErrorText = Strings.EMAIL_EMPTY_TEXT;
         return emailErrorText;
       }else if(email.isNotEmpty){
         bool emailValid = RegExp(r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$').hasMatch(email);
         if(!emailValid){
-          emailErrorText = 'Please enter valid email id';
+          emailErrorText = Strings.EMAIL_ERROR_TEXT;
           return emailErrorText;
         }else{
-          emailErrorText = '';
+          emailErrorText = Strings.EMAIL_SUCCESS_TEXT;
           return emailErrorText;
         }
       }
