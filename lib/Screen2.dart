@@ -7,13 +7,24 @@ import 'package:flutter/material.dart';
 import 'dart:developer';
 import 'package:demo_app/Screen3.dart';
 
-void main() => runApp(Screen2());
+void main() => runApp(
+    MaterialApp(title:  "Routing..",
+      initialRoute: '/screen2',
+      routes: {
+        '/screen2' : (context) => Screen2(),
+        '/screen3' : (context) =>  Screen3(),
+      },
+    )
+);
 
 class Screen2 extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return  Scaffold(
+      body: MyHomePage(title: 'Create Account'),
+    );
+    /*return MaterialApp(
       title: 'Demo',
       theme: ThemeData(
         // This is the theme of your application.
@@ -28,7 +39,7 @@ class Screen2 extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: MyHomePage(title: 'Create Account'),
-    );
+    );*/
   }
 }
 
@@ -341,11 +352,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             splashColor: Colors.blueAccent,
                             color: Colors.lightBlue,
                             onPressed: () => {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => Screen3()),
-                              )
-                                },
+                              Navigator.of(context).pushNamed('/screen3')
+                            },
                             child: Text('Next')),
                       ),
                     )),

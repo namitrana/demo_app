@@ -6,16 +6,31 @@ import 'package:demo_app/ProgressWidget.dart';
 import 'package:demo_app/Screen2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:demo_app/Screen3.dart';
 import 'dart:developer';
 
-void main() => runApp(MyApp());
+void main() => runApp(
+    MaterialApp(title:  "Routing..",
+      initialRoute: '/',
+      routes: {
+        '/' : (context) => MyApp(),
+        '/screen2' : (context) =>  Screen2(),
+        '/screen3' : (context) =>  Screen3(),
+      },
+    )
+);
 
 class MyApp extends StatelessWidget {
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return  Scaffold(
+
+      body: MyHomePage(title: 'Demo App'),
+    );
+    /*return MaterialApp(
+
       title: 'Demo',
       theme: ThemeData(
         // This is the theme of your application.
@@ -30,7 +45,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: MyHomePage(title: 'Demo App'),
-    );
+    );*/
   }
 }
 
@@ -266,10 +281,8 @@ class _MyHomePageState extends State<MyHomePage>{
                             onPressed: () => {
                               //text1 = _validateEmail(emailController.text);
                               if(_validateEmail(emailController.text) == ''){
-                                  Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => Screen2()),
-                                  )
+
+                                  Navigator.of(context).pushNamed('/screen2')
                               }
                             },
                             child: Text('Next')
