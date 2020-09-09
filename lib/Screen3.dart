@@ -5,6 +5,7 @@ import 'package:demo_app/ProgressWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer';
+import 'package:demo_app/RoundedBorderDropDown.dart';
 
 void main() => runApp(Screen3());
 
@@ -52,7 +53,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final _formKey = GlobalKey<FormState>();
 
-
   @override
   void initState() {
     //isPasswordVisible = false;
@@ -67,13 +67,13 @@ class _MyHomePageState extends State<MyHomePage> {
     var w = MediaQuery.of(context).size.width;
     log('height in top: $h');
     int _widgetIndex = 0;
+    String _chosenValue = '';
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-
 
     return Scaffold(
         appBar: AppBar(
@@ -86,7 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Container(
                 color: Colors.blue,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     /*Stack(
                   children: <Widget>[*/
@@ -97,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         width: MediaQuery.of(context).size.width,
                         height: h,
                         color: Colors.blue,
-                        child: new ProgressWidget(1)),
+                        child: new ProgressWidget(3)),
                     // ),
 
                     /*Expanded(
@@ -133,31 +133,51 @@ class _MyHomePageState extends State<MyHomePage> {
                                     //, style: new TextStyle(fontWeight: FontWeight.bold, )
                                     new TextSpan(
                                         text:
-                                        'Please fill the information below and your goal for digital saving.'),
+                                            'Please fill the information below and your goal for digital saving.'),
                                   ],
                                 ),
                               ],
                             ),
                           ),
                         )),
-                    //),
-                    //),
 
 
+
+            Padding(
+              padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
+                    child: new RoundedBorderDropdown()
+            ),
+
+
+                    Padding(
+                        padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
+                        child: new RoundedBorderDropdown()
+                    ),
+
+
+                    Padding(
+                        padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
+                        child: new RoundedBorderDropdown()
+                    ),
+
+
+
+                    //),
+                    //),
 
                     Expanded(
                         child: Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Container(
-                            width: w,
-                            padding: EdgeInsets.fromLTRB(16, 1, 16, 1),
-                            child: MaterialButton(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    side: BorderSide(color: Colors.lightBlue)),
-                                splashColor: Colors.blueAccent,
-                                color: Colors.lightBlue,
-                                onPressed: () => {
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        width: w,
+                        padding: EdgeInsets.fromLTRB(16, 1, 16, 1),
+                        child: MaterialButton(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                side: BorderSide(color: Colors.lightBlue)),
+                            splashColor: Colors.blueAccent,
+                            color: Colors.lightBlue,
+                            onPressed: () => {
                                   if (_formKey.currentState.validate())
                                     {
                                       //log('Email is successful')
@@ -167,12 +187,12 @@ class _MyHomePageState extends State<MyHomePage> {
     );*/
                                     }
                                 },
-                                child: Text('Next')),
-                          ),
-                        )),
+                            child: Text('Next')),
+                      ),
+                    )),
                   ],
                 ) //column,
-            ))//form
-    );
+                )) //form
+        );
   }
 }
