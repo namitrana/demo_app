@@ -54,6 +54,14 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage>{
 
   final _formKey = GlobalKey<FormState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  TextEditingController emailController = TextEditingController();
+
+  String emailErrorText = null;
+
+  void showInSnackBar(String value) {
+    _scaffoldKey.currentState.showSnackBar(new SnackBar(content: new Text(value)));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +106,26 @@ class _MyHomePageState extends State<MyHomePage>{
       );
     }
 
+    String _validateEmail(var email){
+      if (email.isEmpty) {
+        emailErrorText = 'Please enter some text';
+        return emailErrorText;
+      }else if(email.isNotEmpty){
+        bool emailValid = RegExp(r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$').hasMatch(email);
+        if(!emailValid){
+          emailErrorText = 'Please enter valid email id';
+          return emailErrorText;
+        }else{
+          emailErrorText = '';
+          return emailErrorText;
+        }
+      }
+    }
+
+
+    String text1;
     return Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
           // Here we take the value from the MyHomePage object that was created by
           // the App.build method, and use it to set our appbar title.
@@ -185,6 +212,7 @@ class _MyHomePageState extends State<MyHomePage>{
                   padding: EdgeInsets.fromLTRB(16, 3, 16, 3),
 
                   child: TextField(
+                    controller: emailController,
                       /*autovalidate: true,
                       validator: (email) {
                         if (email.isEmpty) {
@@ -197,10 +225,12 @@ class _MyHomePageState extends State<MyHomePage>{
                         }
                         return null;
                       },*/
+
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
                           hintText: 'Email',
                           hintStyle: TextStyle(color: Colors.grey),
+                          errorText: emailErrorText,
                           enabledBorder: const OutlineInputBorder(
                               borderSide:
                               const BorderSide(color: Colors.white, width: 10),
@@ -232,8 +262,8 @@ class _MyHomePageState extends State<MyHomePage>{
                             splashColor: Colors.lightBlue,
                             color: Colors.lightBlue,
                             onPressed: () => {
-                              if(_formKey.currentState.validate()){
-                                  //log('Email is successful')
+                              //text1 = _validateEmail(emailController.text);
+                              if(_validateEmail(emailController.text) == ''){
                                   Navigator.push(
                                   context,
                                   MaterialPageRoute(builder: (context) => Screen2()),

@@ -5,6 +5,7 @@ import 'package:demo_app/ProgressWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer';
+import 'package:demo_app/Screen3.dart';
 
 void main() => runApp(Screen2());
 
@@ -67,6 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
     var h = (MediaQuery.of(context).size.height - statusBarHeight) * .2;
     var w = MediaQuery.of(context).size.width;
     log('height in top: $h');
+    int _widgetIndex = 0;
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -81,17 +83,36 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
 
-                RichText(
-                  textAlign: TextAlign.center,
-                  text: new TextSpan(
-                      style: new TextStyle(
-                          fontSize: 28.0,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
-                    text: topText
-                  ),
-
+                IndexedStack(
+                  alignment: Alignment.topCenter,
+                  index: _widgetIndex,
+                  children: <Widget>[
+                    RichText(
+                      textAlign: TextAlign.center,
+                      text: new TextSpan(
+                          style: new TextStyle(
+                              fontSize: 28.0,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold),
+                          text: topText
+                      ),
+                    ),
+                    RawMaterialButton(
+                      onPressed: () {},
+                      elevation: 2.0,
+                      fillColor: Colors.green,
+                      highlightColor: Colors.white,
+                      child: new IconTheme(
+                        data: new IconThemeData(
+                            color: Colors.white),
+                        child: new Icon(Icons.check),
+                      ),
+                      //padding: EdgeInsets.all(5.0),
+                      shape: CircleBorder(),
+                    )
+                  ],
                 ),
+
 
                 /*RichText(
                   textAlign: TextAlign.center,
@@ -173,7 +194,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               // Note: Styles for TextSpans must be explicitly defined.
                               // Child text spans will inherit styles from parent
                               style: new TextStyle(
-                                fontSize: 24.0,
+                                fontSize: 18.0,
                                 color: Colors.white,
                               ),
                               children: <TextSpan>[
@@ -186,7 +207,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   // Note: Styles for TextSpans must be explicitly defined.
                                   // Child text spans will inherit styles from parent
                                   style: new TextStyle(
-                                      fontSize: 16.0,
+                                      fontSize: 14.0,
                                       color: Colors.white,
                                       fontWeight: FontWeight.normal),
                                   children: <TextSpan>[
@@ -320,14 +341,10 @@ class _MyHomePageState extends State<MyHomePage> {
                             splashColor: Colors.blueAccent,
                             color: Colors.lightBlue,
                             onPressed: () => {
-                                  if (_formKey.currentState.validate())
-                                    {
-                                      //log('Email is successful')
-                                      /* Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => Screen2()),
-    );*/
-                                    }
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => Screen3()),
+                              )
                                 },
                             child: Text('Next')),
                       ),
