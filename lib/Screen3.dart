@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer';
 import 'package:demo_app/RoundedBorderDropDown.dart';
+import 'package:demo_app/Strings.dart';
 
 void main() => runApp(Screen3());
 
@@ -146,21 +147,17 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
 
-            Padding(
-              padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
-                    child: new RoundedBorderDropdown()
-            ),
-
-
                     Padding(
-                        padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
-                        child: new RoundedBorderDropdown()
+                      padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
+                            child: new RoundedBorderDropdown(Strings.dropdownValues, Strings.GOAL_FOR_ACTIVATION_TEXT)
                     ),
-
-
                     Padding(
                         padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
-                        child: new RoundedBorderDropdown()
+                        child: new RoundedBorderDropdown(Strings.dropdownValues, Strings.MONTHLY_INCOME_TEXT)
+                    ),
+                    Padding(
+                        padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
+                        child:  new RoundedBorderDropdown(Strings.dropdownValues, Strings.MONTHLY_EXPENSE_TEXT)
                     ),
 
 

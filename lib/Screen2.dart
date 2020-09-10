@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer';
 import 'package:demo_app/Screen3.dart';
+import 'package:demo_app/Strings.dart';
 
 void main() => runApp(
     MaterialApp(title:  "Routing..",
