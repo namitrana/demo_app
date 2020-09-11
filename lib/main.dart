@@ -10,24 +10,21 @@ import 'package:demo_app/Screen3.dart';
 import 'package:demo_app/Strings.dart';
 import 'dart:developer';
 
-void main() => runApp(
-    MaterialApp(title:  Strings.HOME_PAGE_TITLE,
+void main() => runApp(MaterialApp(
+      title: Strings.HOME_PAGE_TITLE,
       initialRoute: '/',
       routes: {
-        '/' : (context) => MyApp(),
-        '/screen2' : (context) =>  Screen2(),
-        '/screen3' : (context) =>  Screen3(),
+        '/': (context) => MyApp(),
+        '/screen2': (context) => Screen2(),
+        '/screen3': (context) => Screen3(),
       },
-    )
-);
+    ));
 
 class MyApp extends StatelessWidget {
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-
+    return Scaffold(
       body: MyHomePage(title: Strings.HOME_PAGE_TITLE),
     );
     /*return MaterialApp(
@@ -68,17 +65,17 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage>{
-
+class _MyHomePageState extends State<MyHomePage> {
   final _formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   TextEditingController emailController = TextEditingController();
 
-  String emailErrorText = null;
+  String emailErrorText = '';
 
   @override
   void initState() {
     emailController.text = '';
+    emailErrorText = '';
   }
 
   @override
@@ -86,11 +83,42 @@ class _MyHomePageState extends State<MyHomePage>{
     //emailController.text = '';
   }
 
+  String _validateEmail(String email) {
+    String temp;
+    setState(() {
+      if (email.isEmpty) {
+        emailErrorText = Strings.EMAIL_EMPTY_TEXT;
+      } else if (email.isNotEmpty) {
+        bool emailValid =
+            RegExp(r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
+                .hasMatch(email);
+        if (!emailValid) {
+          emailErrorText = Strings.EMAIL_ERROR_TEXT;
+        } else {
+          //emailErrorText = Strings.EMAIL_SUCCESS_TEXT;
+          emailErrorText = '';
+          log("Email Error Text when success:" +
+              emailErrorText.length.toString());
+        }
+      }
+    });
 
+    temp = emailErrorText;
+    return temp;
+  }
+
+  void validateEmail() {
+    int x = 0;
+    String str = _validateEmail(emailController.text);
+    log('//////////////// $str');
+    if (_validateEmail(emailController.text).length == 0) {
+      Navigator.of(context).pushNamed('/screen2');
+    }
+  }
 
   void showInSnackBar(String value) {
-    _scaffoldKey.currentState.showSnackBar(new SnackBar(content: new Text(value)));
-
+    _scaffoldKey.currentState
+        .showSnackBar(new SnackBar(content: new Text(value)));
   }
 
   @override
@@ -108,50 +136,30 @@ class _MyHomePageState extends State<MyHomePage>{
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
 
-     Widget _getRoundContainer(var text){
-       return Container(
-         decoration: BoxDecoration(
-             color: Colors.white,
-             shape: BoxShape.circle
-         ),
-         width: (h-(h*.5)) / 2,
-         height: (h-(h*.5)) / 2,
-         //color: Colors.red,
-         child: Center(
-           child: new Text(text),
-         )
-       );
-     }
+    Widget _getRoundContainer(var text) {
+      return Container(
+          decoration:
+              BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+          width: (h - (h * .5)) / 2,
+          height: (h - (h * .5)) / 2,
+          //color: Colors.red,
+          child: Center(
+            child: new Text(text),
+          ));
+    }
 
-    Widget _getHorizontalLine(){
-     var circlesWidth = ((h-(h*.5)) / 2) * 4;
-     var remainWidth = w - circlesWidth;
-     var lineWidth = remainWidth / 6;
+    Widget _getHorizontalLine() {
+      var circlesWidth = ((h - (h * .5)) / 2) * 4;
+      var remainWidth = w - circlesWidth;
+      var lineWidth = remainWidth / 6;
       return Container(
         decoration: BoxDecoration(
-            color: Colors.black,
+          color: Colors.black,
         ),
         width: lineWidth,
         height: 2,
       );
     }
-
-    String _validateEmail(var email){
-      if (email.isEmpty) {
-        emailErrorText = Strings.EMAIL_EMPTY_TEXT;
-        return emailErrorText;
-      }else if(email.isNotEmpty){
-        bool emailValid = RegExp(r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$').hasMatch(email);
-        if(!emailValid){
-          emailErrorText = Strings.EMAIL_ERROR_TEXT;
-          return emailErrorText;
-        }else{
-          emailErrorText = Strings.EMAIL_SUCCESS_TEXT;
-          return emailErrorText;
-        }
-      }
-    }
-
 
     String text1;
     return Scaffold(
@@ -161,33 +169,24 @@ class _MyHomePageState extends State<MyHomePage>{
           // the App.build method, and use it to set our appbar title.
           title: Text(widget.title),
         ),
-        body:  Form(
+        body: Form(
             key: _formKey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 Stack(
-
                   children: <Widget>[
-
                     ClipPath(
                         clipper: MyCustomClipper(
-                            h,
-                            MediaQuery.of(context).size.width),
+                            h, MediaQuery.of(context).size.width),
                         child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: h,
-                          color: Colors.blue,
-                          child: new ProgressWidget(0)
-                        )
-                    ),
-
+                            width: MediaQuery.of(context).size.width,
+                            height: h,
+                            color: Colors.blue,
+                            child: new ProgressWidget(0))),
                   ],
                 ),
-
                 Expanded(
-
-
                     child: Align(
                         alignment: Alignment.centerLeft,
                         child: Padding(
@@ -208,41 +207,36 @@ class _MyHomePageState extends State<MyHomePage>{
                                     )),
                                 new TextSpan(
                                     text: 'GIN',
-                                    style: new TextStyle(fontWeight: FontWeight.bold)),
+                                    style: new TextStyle(
+                                        fontWeight: FontWeight.bold)),
                                 new TextSpan(
                                     text: ' Finans',
                                     style: new TextStyle(
                                         color: Colors.blue,
-                                        fontWeight: FontWeight.bold)
-                                ),
+                                        fontWeight: FontWeight.bold)),
                                 new TextSpan(
                                   // Note: Styles for TextSpans must be explicitly defined.
                                   // Child text spans will inherit styles from parent
                                   style: new TextStyle(
                                       fontSize: 16.0,
                                       color: Colors.black,
-                                      fontWeight: FontWeight.bold
-                                  ),
+                                      fontWeight: FontWeight.bold),
                                   children: <TextSpan>[
                                     //, style: new TextStyle(fontWeight: FontWeight.bold, )
                                     new TextSpan(
-                                        text: '\n\nWelcome to The Bank of The Future.'
+                                        text:
+                                            '\n\nWelcome to The Bank of The Future.'
                                             '\nManage and track your accounts\non the go.'),
                                   ],
                                 ),
-
                               ],
                             ),
                           ),
-                        )
-                    )
-                ),
-
+                        ))),
                 Padding(
                   padding: EdgeInsets.fromLTRB(16, 3, 16, 3),
-
                   child: TextField(
-                    controller: emailController,
+                      controller: emailController,
                       /*autovalidate: true,
                       validator: (email) {
                         if (email.isEmpty) {
@@ -258,59 +252,39 @@ class _MyHomePageState extends State<MyHomePage>{
 
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
-                          hintText: 'Email',
-                          hintStyle: TextStyle(color: Colors.grey),
-                          errorText: emailErrorText,
-                          enabledBorder: const OutlineInputBorder(
-                              borderSide:
-                              const BorderSide(color: Colors.white, width: 10),
-                              borderRadius: const BorderRadius.all(
-                                  const Radius.circular(10.0))),
-                          prefixIcon: Icon(Icons.email),
-                          //border: InputBorder.none
-                          //labelText: 'Email'
-                      )
-                  ),
+                        hintText: 'Email',
+                        hintStyle: TextStyle(color: Colors.grey),
+                        errorText: emailErrorText,
+                        enabledBorder: const OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                color: Colors.white, width: 10),
+                            borderRadius: const BorderRadius.all(
+                                const Radius.circular(10.0))),
+                        prefixIcon: Icon(Icons.email),
+                        //border: InputBorder.none
+                        //labelText: 'Email'
+                      )),
                 ),
-
-
-
-
-
                 Expanded(
                     child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Container(
-
-                        width: w,
-                        //color: Colors.red,
-                        padding: EdgeInsets.fromLTRB(16, 1, 16, 1),
-                        child: MaterialButton(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                side: BorderSide(color: Colors.lightBlue)
-                            ),
-                            splashColor: Colors.lightBlue,
-                            color: Colors.lightBlue,
-                            onPressed: () => {
-                              //text1 = _validateEmail(emailController.text);
-                              if(_validateEmail(emailController.text) == ''){
-
-
-                                  Navigator.of(context).pushNamed('/screen2')
-                              }
-                            },
-                            child: Text('Next')
-                        ),
-                      ),
-
-                    )
-                ),
-
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    width: w,
+                    //color: Colors.red,
+                    padding: EdgeInsets.fromLTRB(16, 1, 16, 1),
+                    child: MaterialButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            side: BorderSide(color: Colors.lightBlue)),
+                        splashColor: Colors.lightBlue,
+                        color: Colors.lightBlue,
+                        onPressed: validateEmail,
+                        child: Text('Next')),
+                  ),
+                )),
               ],
-            )//column,
-        )
-    );
+            ) //column,
+            ));
   }
 }
 
@@ -328,7 +302,8 @@ class MyCustomClipper extends CustomClipper<Path> {
     var path = new Path();
     path.lineTo(0, h);
     //var firstControlPoint = new Offset(size.width / 12, h / 4);
-    var firstControlPoint = new Offset(size.width - (size.width * .95), h - (h * .5));
+    var firstControlPoint =
+        new Offset(size.width - (size.width * .95), h - (h * .5));
     var firstEndPoint = new Offset(size.width, h);
     path.quadraticBezierTo(firstControlPoint.dx, firstControlPoint.dy,
         firstEndPoint.dx, firstEndPoint.dy);
