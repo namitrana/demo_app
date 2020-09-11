@@ -101,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         width: MediaQuery.of(context).size.width,
                         height: h,
                         color: Colors.blue,
-                        child: new ProgressWidget(3)),
+                        child: new ProgressWidget(2)),
                     // ),
 
                     /*Expanded(
