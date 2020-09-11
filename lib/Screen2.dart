@@ -64,11 +64,24 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final _formKey = GlobalKey<FormState>();
-
+  List<String> topTextList = ['a', 'A', '123', '9+'];
+  List<String> bottomTextList = ['Lowercase', 'Uppercase', 'Number', 'Characters'];
+  List<int> widgetIndex = [0, 0, 0, 0];
   bool isPasswordVisible;
+  String complexityText = '';
 
+  TextEditingController passwordController = TextEditingController();
+  Widget widget1;
+  //List<PasswordStatusState> passwordStatusList = new List<PasswordStatusState>();
   @override
   void initState() {
+
+    /*for(int i = 0; i < topTextList.length; i++){
+       passwordStatusList.add( new PasswordStatusState(topTextList[i], bottomTextList[i]) );
+       passwordStatusList[i].setWidgetIndex(0);
+    }*/
+
+    passwordController.text = '';
     isPasswordVisible = false;
   }
 
@@ -80,7 +93,9 @@ class _MyHomePageState extends State<MyHomePage> {
     var h = (MediaQuery.of(context).size.height - statusBarHeight) * .2;
     var w = MediaQuery.of(context).size.width;
     log('height in top: $h');
-    int _widgetIndex = 0;
+
+
+
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -88,16 +103,19 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
 
-    Widget getTextWidget(var topText, var bottomText) {
-      return Column(
+    Widget getTextWidget(var topText, var bottomText, int index) {
+
+       widget1 = Column(
+
             // mainAxisAlignment: MainAxisAlignment.center,
             //crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
 
                 IndexedStack(
+                  //key: bottomText,
                   alignment: Alignment.topCenter,
-                  index: _widgetIndex,
+                  index: widgetIndex[index],
                   children: <Widget>[
                     RichText(
                       textAlign: TextAlign.center,
@@ -166,6 +184,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 //)
               ]);
 
+        return widget1;
     }
 
     return Scaffold(
@@ -240,6 +259,66 @@ class _MyHomePageState extends State<MyHomePage> {
                         /*child: Container(
                     color: Colors.blue,*/
                         child: TextField(
+                            onChanged: (text) {
+                              print("First text field: $text");
+                              bool isLetter = RegExp('[a-z]+').hasMatch(text);
+                              bool isCapLetter = RegExp('[A-Z]+').hasMatch(text);
+                              bool isNumber = RegExp('[0-9]+').hasMatch(text);
+                              print("isLetter: $isLetter" );
+                              print("isCapLetter: $isCapLetter" );
+
+                                setState(() {
+
+
+                                  if(isLetter) {
+                                    widgetIndex[0] = 1;
+                                  }else{
+                                    widgetIndex[0] = 0;
+                                  }
+
+                                  if(isCapLetter) {
+                                    widgetIndex[1] = 1;
+                                  }else{
+                                    widgetIndex[1] = 0;
+                                  }
+                                  if(isNumber) {
+                                    widgetIndex[2] = 1;
+                                  }else{
+                                    widgetIndex[2] = 0;
+                                  }
+                                  if(text.length > 9) {
+                                    widgetIndex[3] = 1;
+                                  }else{
+                                    widgetIndex[3] = 0;
+                                  }
+
+
+                                  int value = widgetIndex[0] + widgetIndex[1] +
+                                      widgetIndex[2] + widgetIndex[3];
+                                  if(text.length < 4){
+                                      complexityText = "Very Weak";
+                                  }else{
+                                    switch(value){
+                                      case 1:
+                                        complexityText = 'Very Weak';
+                                        break;
+                                      case 2:
+                                        complexityText = 'Weak';
+                                        break;
+                                      case 3:
+                                        complexityText = 'Strong';
+                                        break;
+                                      case 4:
+                                        complexityText = 'Very Strong';
+                                        break;
+                                    }
+
+                                  }
+
+                                });
+
+                            },
+                          controller: passwordController,
                             /*autovalidate: true,
 
                       validator: (password) {
@@ -250,7 +329,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         }
                       },*/
                             keyboardType: TextInputType.text,
-                            obscureText: isPasswordVisible,
+                            obscureText: !isPasswordVisible,
                             decoration: InputDecoration(
                               hintText: 'Create Password',
                               hintStyle: TextStyle(color: Colors.grey),
@@ -312,7 +391,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       //, style: new TextStyle(fontWeight: FontWeight.bold, )
                                       new TextSpan(text: 'Complexity: '),
                                       new TextSpan(
-                                          text: ' Very Weak',
+                                          text: complexityText,
                                           style: new TextStyle(
                                               fontSize: 14,
                                               color: Colors.orange,
@@ -332,10 +411,11 @@ class _MyHomePageState extends State<MyHomePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        getTextWidget('a', "Lowercase"),
-                        getTextWidget('A', "Uppercase"),
-                        getTextWidget('123', "Number"),
-                        getTextWidget('9+', "Characters"),
+                        for ( int i = 0; i < topTextList.length; i++ )
+                            //passwordStatusList[i]
+
+                          getTextWidget(topTextList[i], bottomTextList[i], i)
+
                       ],
                     ),
                     //),
@@ -353,7 +433,18 @@ class _MyHomePageState extends State<MyHomePage> {
                             splashColor: Colors.blueAccent,
                             color: Colors.lightBlue,
                             onPressed: () => {
-                              Navigator.of(context).pushNamed('/screen3')
+                              if(passwordController.text.length < 5){
+                                  if(passwordController.text == 'a'){
+                                    setState(() {
+                                      widgetIndex[0] = 1;
+                                    })
+                                  }
+
+
+                              }
+                              else {
+                                  Navigator.of(context).pushNamed('/screen3')
+                                }
                             },
                             child: Text('Next')),
                       ),
@@ -364,3 +455,126 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
+
+/*class PasswordStatus extends StatefulWidget{
+
+  static String topText = '';
+  static String bottomText = '';
+  PasswordStatus(String topText1, String bottomText1){
+    topText = topText1;
+    bottomText = bottomText1;
+  }
+
+  PasswordStatusState ps = new PasswordStatusState(topText, bottomText);
+  @override
+  PasswordStatusState createState() => ps;
+
+}*/
+
+//class PasswordStatusState extends State<PasswordStatus>{
+/*
+class PasswordStatusState extends StatelessWidget{
+
+  String topText = '';
+  String bottomText = '';
+
+  int _widgetIndex = 0;
+
+  void setWidgetIndex(int w){
+    this._widgetIndex = w;
+  }
+
+  PasswordStatusState(String topText, String bottomText){
+    this.topText = topText;
+    this.bottomText = bottomText;
+
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Column(
+
+      // mainAxisAlignment: MainAxisAlignment.center,
+      //crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+
+          IndexedStack(
+            //key: bottomText,
+            alignment: Alignment.topCenter,
+            index: _widgetIndex,
+            children: <Widget>[
+              RichText(
+                textAlign: TextAlign.center,
+                text: new TextSpan(
+                    style: new TextStyle(
+                        fontSize: 28.0,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
+                    text: topText
+                ),
+              ),
+              RawMaterialButton(
+                onPressed: () {},
+                elevation: 2.0,
+                fillColor: Colors.green,
+                highlightColor: Colors.white,
+                child: new IconTheme(
+                  data: new IconThemeData(
+                      color: Colors.white),
+                  child: new Icon(Icons.check),
+                ),
+                //padding: EdgeInsets.all(5.0),
+                shape: CircleBorder(),
+              )
+            ],
+          ),
+
+
+          */
+/*RichText(
+                  textAlign: TextAlign.center,
+                  text: new TextSpan(
+                    children: <TextSpan>[
+                      new TextSpan(
+                        style: new TextStyle(
+                            fontSize: 28.0,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
+                        children: <TextSpan>[
+                          //, style: new TextStyle(fontWeight: FontWeight.bold, )
+                          new TextSpan(text: topText),
+
+                          new TextSpan(
+                          text: bottomText,
+                          style: new TextStyle(
+                              fontSize: 12,
+                              color: Colors.white,
+                              fontWeight: FontWeight.normal)),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),*//*
+
+
+          RichText(
+            textAlign: TextAlign.center,
+            text: new TextSpan(
+                text: bottomText,
+                style: new TextStyle(
+                    fontSize: 12,
+                    color: Colors.white,
+                    fontWeight: FontWeight.normal)),
+          ),
+
+
+
+          //)
+        ]);
+  }
+
+}
+*/

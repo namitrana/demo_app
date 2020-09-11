@@ -76,8 +76,21 @@ class _MyHomePageState extends State<MyHomePage>{
 
   String emailErrorText = null;
 
+  @override
+  void initState() {
+    emailController.text = '';
+  }
+
+  @override
+  void dispose() {
+    //emailController.text = '';
+  }
+
+
+
   void showInSnackBar(String value) {
     _scaffoldKey.currentState.showSnackBar(new SnackBar(content: new Text(value)));
+
   }
 
   @override
@@ -282,6 +295,7 @@ class _MyHomePageState extends State<MyHomePage>{
                             onPressed: () => {
                               //text1 = _validateEmail(emailController.text);
                               if(_validateEmail(emailController.text) == ''){
+
 
                                   Navigator.of(context).pushNamed('/screen2')
                               }

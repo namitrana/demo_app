@@ -9,11 +9,11 @@ class Strings {
   static const String MONTHLY_INCOME_TEXT = "Monthly income";
   static const String MONTHLY_EXPENSE_TEXT = "Monthly expense";
   static final List<String> dropdownValues = [
-    "- Choose Option -",
-    "One",
-    "Two",
-    "Three",
-    "Four",
-    "Five"
+    " - Choose Option -",
+    " One",
+    " Two",
+    " Three",
+    " Four",
+    " Five"
   ];
 }
