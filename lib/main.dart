@@ -108,10 +108,9 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void validateEmail() {
-    int x = 0;
     String str = _validateEmail(emailController.text);
     log('//////////////// $str');
-    if (_validateEmail(emailController.text).length == 0) {
+    if (str.length == 0) {
       Navigator.of(context).pushNamed('/screen2');
     }
   }

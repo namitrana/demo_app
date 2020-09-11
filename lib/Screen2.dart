@@ -72,17 +72,44 @@ class _MyHomePageState extends State<MyHomePage> {
 
   TextEditingController passwordController = TextEditingController();
   Widget widget1;
+  String passwordErrorText = '';
+
   //List<PasswordStatusState> passwordStatusList = new List<PasswordStatusState>();
   @override
   void initState() {
-
-    /*for(int i = 0; i < topTextList.length; i++){
-       passwordStatusList.add( new PasswordStatusState(topTextList[i], bottomTextList[i]) );
-       passwordStatusList[i].setWidgetIndex(0);
-    }*/
-
     passwordController.text = '';
     isPasswordVisible = false;
+  }
+
+  String _validatePassword(String password) {
+    bool hasUppercase = password.contains(new RegExp(r'[A-Z]'));
+    bool hasDigits = password.contains(new RegExp(r'[0-9]'));
+    bool hasLowercase = password.contains(new RegExp(r'[a-z]'));
+    bool hasSpecialCharacters = password.contains(new RegExp(r'[!@#$%^&*(),.?":{}|<>]'));
+
+    String temp;
+    setState(() {
+      if(password.length == 0){
+        passwordErrorText = "Please enter some text";
+      }else if(password.length < 8){
+        passwordErrorText = "Minimum 8 letters required";
+      }else if(hasDigits & hasUppercase & hasLowercase & hasSpecialCharacters){
+        passwordErrorText = '';
+      }else{
+        passwordErrorText = "Invalid password";
+      }
+    });
+
+    temp = passwordErrorText;
+    return temp;
+  }
+
+  void validatePassword() {
+    String str = _validatePassword(passwordController.text);
+    log('//////////////// $str');
+    if (str.length == 0) {
+      Navigator.of(context).pushNamed('/screen3');
+    }
   }
 
   @override
@@ -93,8 +120,6 @@ class _MyHomePageState extends State<MyHomePage> {
     var h = (MediaQuery.of(context).size.height - statusBarHeight) * .2;
     var w = MediaQuery.of(context).size.width;
     log('height in top: $h');
-
-
 
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
@@ -332,6 +357,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             obscureText: !isPasswordVisible,
                             decoration: InputDecoration(
                               hintText: 'Create Password',
+                              errorText: passwordErrorText,
                               hintStyle: TextStyle(color: Colors.grey),
                               fillColor: Colors.white,
                               filled: true,
@@ -432,20 +458,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 side: BorderSide(color: Colors.lightBlue)),
                             splashColor: Colors.blueAccent,
                             color: Colors.lightBlue,
-                            onPressed: () => {
-                              if(passwordController.text.length < 5){
-                                  if(passwordController.text == 'a'){
-                                    setState(() {
-                                      widgetIndex[0] = 1;
-                                    })
-                                  }
-
-
-                              }
-                              else {
-                                  Navigator.of(context).pushNamed('/screen3')
-                                }
-                            },
+                            onPressed: validatePassword,
                             child: Text('Next')),
                       ),
                     )),
