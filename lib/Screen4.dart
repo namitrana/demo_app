@@ -8,9 +8,9 @@ import 'dart:developer';
 import 'package:demo_app/RoundedBorderDropDown.dart';
 import 'package:demo_app/Strings.dart';
 
-void main() => runApp(Screen3());
+void main() => runApp(Screen4());
 
-class Screen3 extends StatelessWidget {
+class Screen4 extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -58,13 +58,22 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
   final _formKey = GlobalKey<FormState>();
 
   AnimationController animationController;
+
+
+  String goal = Strings.dropdownValues.first;
+  String monthlyIncome = Strings.dropdownValues.first;
+  String monthlyExpense = Strings.dropdownValues.first;
+
+  List<String> list;
+  String label;
+  String _selectedItem = '';
+
   ProgressWidget pw;
 
   @override
   void initState() {
     //isPasswordVisible = false;
-
-    pw = new ProgressWidget(3, true);
+    pw = new ProgressWidget(3, false);
     animationController = AnimationController(
       vsync: this,
       duration: Duration(seconds: 1),
@@ -80,15 +89,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
     animationController.dispose();
     super.dispose();
   }
-
-  String goal = Strings.dropdownValues.first;
-  String monthlyIncome = Strings.dropdownValues.first;
-  String monthlyExpense = Strings.dropdownValues.first;
-
-  List<String> list;
-  String label;
-  String _selectedItem = '';
-
 
   String getSelectedItem(String id){
     if(id=='goal'){
@@ -130,14 +130,14 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
     void validate(){
       String message = '';
       if(goal.contains('-') || goal.length == 0){
-          message = "Please select your goal";
-          showMessage(message);
+        message = "Please select your goal";
+        showMessage(message);
       }else if(monthlyIncome.contains("-") || monthlyIncome.length == 0){
-          message = "Please mention your monthly income";
-          showMessage(message);
+        message = "Please mention your monthly income";
+        showMessage(message);
       }else if(monthlyExpense.contains('-') || monthlyExpense.length == 0){
-          message = "Please mention your monthly expense";
-          showMessage(message);
+        message = "Please mention your monthly expense";
+        showMessage(message);
       }else{
         Navigator.of(context).pushNamed('/screen4');
       }
@@ -149,7 +149,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
       list = _dropdownValues;
       this.label = label;
       _selectedItem = _dropdownValues.first;
-     // goal = monthlyExpense = monthlyIncome = _selectedItem;
+      // goal = monthlyExpense = monthlyIncome = _selectedItem;
 
       return Container(
           width: w - 20,
@@ -241,7 +241,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
                         width: MediaQuery.of(context).size.width,
                         height: h,
                         color: Colors.blue,
-                        child: pw),
+                        child: pw
+                    ),
                     // ),
 
                     /*Expanded(
@@ -262,7 +263,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
                               ),
                               children: <TextSpan>[
                                 new TextSpan(
-                                    text: 'Personal Information\n',
+                                    text: 'Schedule Video Call\n',
                                     style: new TextStyle(
                                       fontWeight: FontWeight.bold,
                                     )),
@@ -277,7 +278,9 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
                                     //, style: new TextStyle(fontWeight: FontWeight.bold, )
                                     new TextSpan(
                                         text:
-                                            'Please fill the information below and your goal for digital saving.'),
+                                        'Choose the date and time that you prefered. '
+                                            'we will send a link via email to make a video'
+                                            'call on the scheduled date and time.'),
                                   ],
                                 ),
                               ],
@@ -288,19 +291,19 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
 
 
                     Padding(
-                      padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
-                            child: getRoundedBorderDropdown(Strings.dropdownValues, Strings.GOAL_FOR_ACTIVATION_TEXT, 'goal')
-                            //new RoundedBorderDropdown(Strings.dropdownValues, Strings.GOAL_FOR_ACTIVATION_TEXT)
+                        padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
+                        child: getRoundedBorderDropdown(Strings.dropdownValues, Strings.GOAL_FOR_ACTIVATION_TEXT, 'goal')
+                      //new RoundedBorderDropdown(Strings.dropdownValues, Strings.GOAL_FOR_ACTIVATION_TEXT)
                     ),
                     Padding(
                         padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
                         child: getRoundedBorderDropdown(Strings.dropdownValues, Strings.MONTHLY_INCOME_TEXT,'mi')
-                        //new RoundedBorderDropdown(Strings.dropdownValues, Strings.MONTHLY_INCOME_TEXT)
+                      //new RoundedBorderDropdown(Strings.dropdownValues, Strings.MONTHLY_INCOME_TEXT)
                     ),
                     Padding(
                         padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
                         child:  getRoundedBorderDropdown(Strings.dropdownValues, Strings.MONTHLY_EXPENSE_TEXT,'me')
-                        //new RoundedBorderDropdown(Strings.dropdownValues, Strings.MONTHLY_EXPENSE_TEXT)
+                      //new RoundedBorderDropdown(Strings.dropdownValues, Strings.MONTHLY_EXPENSE_TEXT)
                     ),
 
 
@@ -310,23 +313,23 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
 
                     Expanded(
                         child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Container(
-                        width: w,
-                        padding: EdgeInsets.fromLTRB(16, 1, 16, 1),
-                        child: MaterialButton(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                side: BorderSide(color: Colors.lightBlue)),
-                            splashColor: Colors.blueAccent,
-                            color: Colors.lightBlue,
-                            onPressed: validate,
-                            child: Text('Next')),
-                      ),
-                    )),
+                          alignment: Alignment.bottomCenter,
+                          child: Container(
+                            width: w,
+                            padding: EdgeInsets.fromLTRB(16, 1, 16, 1),
+                            child: MaterialButton(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    side: BorderSide(color: Colors.lightBlue)),
+                                splashColor: Colors.blueAccent,
+                                color: Colors.lightBlue,
+                                onPressed: validate,
+                                child: Text('Next')),
+                          ),
+                        )),
                   ],
                 ) //column,
-                )) //form
-        );
+            )) //form
+    );
   }
 }

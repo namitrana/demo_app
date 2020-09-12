@@ -62,7 +62,7 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
   final _formKey = GlobalKey<FormState>();
   List<String> topTextList = ['a', 'A', '123', '9+'];
   List<String> bottomTextList = ['Lowercase', 'Uppercase', 'Number', 'Characters'];
@@ -74,11 +74,29 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget widget1;
   String passwordErrorText = '';
 
+  AnimationController animationController;
+  ProgressWidget pw;
   //List<PasswordStatusState> passwordStatusList = new List<PasswordStatusState>();
   @override
   void initState() {
     passwordController.text = '';
     isPasswordVisible = false;
+
+    pw = new ProgressWidget(3, true);
+    animationController = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 1),
+    )
+      ..forward()
+      ..repeat(reverse: true);
+
+    pw.setAnimationController(animationController);
+  }
+
+  @override
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
   }
 
   String _validatePassword(String password) {
@@ -98,6 +116,8 @@ class _MyHomePageState extends State<MyHomePage> {
       }else{
         passwordErrorText = "Invalid password";
       }
+      //to remove
+      passwordErrorText = '';
     });
 
     temp = passwordErrorText;
@@ -234,7 +254,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         width: MediaQuery.of(context).size.width,
                         height: h,
                         color: Colors.blue,
-                        child: new ProgressWidget(1)),
+                        child: pw),
                     // ),
 
                     /*Expanded(

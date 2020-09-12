@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:demo_app/Screen3.dart';
 import 'package:demo_app/Strings.dart';
+import 'package:demo_app/Screen4.dart';
 import 'dart:developer';
 
 void main() => runApp(MaterialApp(
@@ -17,6 +18,7 @@ void main() => runApp(MaterialApp(
         '/': (context) => MyApp(),
         '/screen2': (context) => Screen2(),
         '/screen3': (context) => Screen3(),
+        '/screen4': (context) => Screen4(),
       },
     ));
 
@@ -65,22 +67,36 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
   final _formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   TextEditingController emailController = TextEditingController();
 
   String emailErrorText = '';
 
+  AnimationController animationController;
+  ProgressWidget pw;
   @override
   void initState() {
     emailController.text = '';
     emailErrorText = '';
+
+    pw = new ProgressWidget(3, true);
+    animationController = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 1),
+    )
+      ..forward()
+      ..repeat(reverse: true);
+
+    pw.setAnimationController(animationController);
   }
 
   @override
   void dispose() {
     //emailController.text = '';
+    animationController.dispose();
+    super.dispose();
   }
 
   String _validateEmail(String email) {
@@ -100,6 +116,9 @@ class _MyHomePageState extends State<MyHomePage> {
           log("Email Error Text when success:" +
               emailErrorText.length.toString());
         }
+
+        //to remove
+        emailErrorText = '';
       }
     });
 
@@ -182,7 +201,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             width: MediaQuery.of(context).size.width,
                             height: h,
                             color: Colors.blue,
-                            child: new ProgressWidget(0))),
+                            child: pw)),
                   ],
                 ),
                 Expanded(
