@@ -1,107 +1,122 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class ProgressWidget extends StatelessWidget  {
+class ProgressWidget extends StatelessWidget {
+  int greenText = 0;
+  AnimationController animationController;
+  bool hide = true;
 
-    int greenText = 0;
-    AnimationController animationController;
-    bool hide = true;
-    ProgressWidget(int greenText, bool hide){
-        this.greenText = greenText;
-        this.hide = hide;
-    }
+  ProgressWidget(int greenText, bool hide) {
+    this.greenText = greenText;
+    this.hide = hide;
+  }
 
-
-    void setAnimationController(AnimationController animationController){
-      this.animationController = animationController;
-    }
+  void setAnimationController(AnimationController animationController) {
+    this.animationController = animationController;
+  }
 
   @override
   Widget build(BuildContext context) {
-
     var statusBarHeight = MediaQuery.of(context).padding.top;
     var h = (MediaQuery.of(context).size.height - statusBarHeight) * .2;
     var w = MediaQuery.of(context).size.width;
 
+    Widget _getIcon() {
+      return Offstage(
+          offstage: hide,
+          child: Container(
+                  alignment: Alignment.centerLeft,
+                  width: w,
+                  child: AnimatedBuilder(
+                    animation: animationController,
+                    builder: (context, child){
+                      return Container(
+                        decoration: ShapeDecoration(
+                            color: Colors.white.withOpacity(0.5),
+                            shape: CircleBorder(),
+                      ),
+                        child: Padding(
+                          padding: EdgeInsets.all(8.0 * animationController.value),
+                          child: Container(
+                              decoration: ShapeDecoration(
+                                color: Colors.white.withOpacity(0.8),
+                                shape: CircleBorder(),
+                              ),
+                              child : RawMaterialButton(
 
-    Widget _getIcon(){
-      return
-        Offstage(
+                                onPressed: () {},
+                                elevation: 2.0,
+                                fillColor: Colors.white,
+                                highlightColor: Colors.white,
+                                child: new IconTheme(
+                                  data: new IconThemeData(color: Colors.grey),
+                                  child: new Icon(Icons.calendar_today),
+                                ),
+
+                                //padding: EdgeInsets.all(5.0),
+                                shape: CircleBorder(),
+                              )
+                          ),
+                        ),
+                      );
+                    }
+                  )
+
+                )
+
+      );
+      /*Offstage(
             offstage: hide,
             child: AnimatedBuilder(
                 animation: animationController,
                 builder: (context, child) {
                   return Container(
 
-                    alignment: Alignment.center,
+                    alignment: Alignment.centerLeft,
                       decoration: ShapeDecoration(
                         color: Colors.white.withOpacity(0.5),
                         shape: CircleBorder(),
                       ),
                     width: w,
-                    child: Padding(
-                      padding: EdgeInsets.all(5.0 * animationController.value),
-                      child: RawMaterialButton(
-                        onPressed: () {},
-                        elevation: 2.0,
-                        fillColor: Colors.white,
-                        highlightColor: Colors.white,
-                        child: new IconTheme(
-                          data: new IconThemeData(
-                              color: Colors.grey),
-                          child: new Icon(Icons.calendar_today),
-                        ),
+                    child:  Padding(
+                        padding: EdgeInsets.all(5.0 * animationController.value),
+                        child: RawMaterialButton(
+                          onPressed: () {},
+                          elevation: 2.0,
+                          fillColor: Colors.white,
+                          highlightColor: Colors.white,
+                          child: new IconTheme(
+                            data: new IconThemeData(
+                                color: Colors.grey),
+                            child: new Icon(Icons.calendar_today),
+                          ),
 
-                        //padding: EdgeInsets.all(5.0),
-                        shape: CircleBorder(),
+                          //padding: EdgeInsets.all(5.0),
+                          shape: CircleBorder(),
+                        ),
                       ),
-                    )
+
+
                   );
                 }
-            ),
-
-
-
-            /*Container(
-              padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-              alignment: Alignment.topLeft,
-              width: w,
-              child: RawMaterialButton(
-                onPressed: () {},
-                elevation: 2.0,
-                fillColor: Colors.white,
-                highlightColor: Colors.white,
-                child: new IconTheme(
-                  data: new IconThemeData(
-                      color: Colors.grey),
-                  child: new Icon(Icons.calendar_today),
-                ),
-                //padding: EdgeInsets.all(5.0),
-                shape: CircleBorder(),
-              ),
-            )*/
-        );
+            ),*/
     }
 
-    Widget _getRoundContainer(int text){
+    Widget _getRoundContainer(int text) {
       return Container(
-
           decoration: BoxDecoration(
               color: text > greenText ? Colors.white : Colors.green,
-              shape: BoxShape.circle
-          ),
-          width: (h-(h*.5)) / 2,
-          height: (h-(h*.5)) / 2,
+              shape: BoxShape.circle),
+          width: (h - (h * .5)) / 2,
+          height: (h - (h * .5)) / 2,
           //color: Colors.red,
           child: Center(
             child: new Text(text.toString()),
-          )
-      );
+          ));
     }
 
-    Widget _getHorizontalLine(){
-
-      var circlesWidth = ((h-(h*.5)) / 2) * 4;
+    Widget _getHorizontalLine() {
+      var circlesWidth = ((h - (h * .5)) / 2) * 4;
       var remainWidth = w - circlesWidth;
       //var lineWidth = remainWidth / 3;
       var lineWidth = (remainWidth / 3) - 30;
@@ -114,39 +129,33 @@ class ProgressWidget extends StatelessWidget  {
       );
     }
 
-
     return Container(
-      width: MediaQuery.of(context).size.width,
-      height: h,
-      color: Colors.blue,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-      Container(
-      //padding: EdgeInsets.fromLTRB(15, 0, 15,0),
-        alignment: Alignment.topLeft,
-          width: w,
-          child:Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-
-              _getRoundContainer(1),
-              _getHorizontalLine(),
-              _getRoundContainer(2),
-              _getHorizontalLine(),
-              _getRoundContainer(3),
-              _getHorizontalLine(),
-              _getRoundContainer(4),
-
-            ],
-          )
-      ),
-          _getIcon(),
-
-        ],
-      )
-    );
+        width: MediaQuery.of(context).size.width,
+        height: h,
+        color: Colors.blue,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+                //padding: EdgeInsets.fromLTRB(15, 0, 15,0),
+                alignment: Alignment.topLeft,
+                width: w,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    _getRoundContainer(1),
+                    _getHorizontalLine(),
+                    _getRoundContainer(2),
+                    _getHorizontalLine(),
+                    _getRoundContainer(3),
+                    _getHorizontalLine(),
+                    _getRoundContainer(4),
+                  ],
+                )),
+            _getIcon(),
+          ],
+        ));
   }
 
   @override
@@ -185,5 +194,4 @@ class ProgressWidget extends StatelessWidget  {
   @override
   // TODO: implement widget
   StatefulWidget get widget => null;
-
 }

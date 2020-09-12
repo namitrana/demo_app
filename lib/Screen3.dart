@@ -64,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
   void initState() {
     //isPasswordVisible = false;
 
-    pw = new ProgressWidget(3, true);
+    pw = new ProgressWidget(2, true);
     animationController = AnimationController(
       vsync: this,
       duration: Duration(seconds: 1),
