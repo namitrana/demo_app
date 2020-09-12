@@ -2,6 +2,7 @@
 import 'dart:ui';
 
 import 'package:demo_app/ProgressWidget.dart';
+import 'package:demo_app/label.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer';
@@ -14,7 +15,7 @@ class Screen4 extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       body: MyHomePage(title: 'Create Account'),
     );
     /*return MaterialApp(
@@ -54,15 +55,11 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
+class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
-
   AnimationController animationController;
-
-
-  String goal = Strings.dropdownValues.first;
-  String monthlyIncome = Strings.dropdownValues.first;
-  String monthlyExpense = Strings.dropdownValues.first;
+  String time = Strings.dropDownTime.first;
+  TextEditingController dateTextController = TextEditingController()..text = '- Choose Date -';
 
   List<String> list;
   String label;
@@ -90,16 +87,10 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
     super.dispose();
   }
 
-  String getSelectedItem(String id){
-    if(id=='goal'){
-      log("getSelectedItem()111: $goal");
-      return goal;
-    }else if(id == 'mi'){
-      log("getSelectedItem()222: $monthlyIncome");
-      return monthlyIncome;
-    }else{
-      log("getSelectedItem()333: $monthlyExpense");
-      return monthlyExpense;
+  String getSelectedItem(String id) {
+    if (id == 'time') {
+      log("getSelectedItem()111: $time");
+      return time;
     }
   }
 
@@ -108,9 +99,18 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
   Widget build(BuildContext context) {
     //var h = (MediaQuery.of(context).size.height - 88) / 4.5;
     //var h = (MediaQuery.of(context).size.height - 88) * .2;
-    var statusBarHeight = MediaQuery.of(context).padding.top;
-    var h = (MediaQuery.of(context).size.height - statusBarHeight) * .2;
-    var w = MediaQuery.of(context).size.width;
+    var statusBarHeight = MediaQuery
+        .of(context)
+        .padding
+        .top;
+    var h = (MediaQuery
+        .of(context)
+        .size
+        .height - statusBarHeight) * .2;
+    var w = MediaQuery
+        .of(context)
+        .size
+        .width;
     log('height in top: $h');
     int _widgetIndex = 0;
     String _chosenValue = '';
@@ -120,32 +120,26 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-    void showMessage(message){
+    void showMessage(message) {
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text(message),
         duration: Duration(seconds: 3),
       ));
     }
 
-    void validate(){
+    void validate() {
       String message = '';
-      if(goal.contains('-') || goal.length == 0){
-        message = "Please select your goal";
+      if (time.contains('-') || time.length == 0) {
+        message = "Please select time";
         showMessage(message);
-      }else if(monthlyIncome.contains("-") || monthlyIncome.length == 0){
-        message = "Please mention your monthly income";
-        showMessage(message);
-      }else if(monthlyExpense.contains('-') || monthlyExpense.length == 0){
-        message = "Please mention your monthly expense";
-        showMessage(message);
-      }else{
+      } else {
         Navigator.of(context).pushNamed('/screen4');
       }
-
     }
 
 
-    Widget getRoundedBorderDropdown(List<String> _dropdownValues, String label, String id){
+    Widget getRoundedBorderDropdown(List<String> _dropdownValues, String label,
+        String id) {
       list = _dropdownValues;
       this.label = label;
       _selectedItem = _dropdownValues.first;
@@ -185,26 +179,23 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
                         //    isDense: true,
                         //hint: Text('DropdownButton Hint'),
                         iconEnabledColor: Colors.grey,
+
                         onChanged: (String value) {
                           setState(() {
                             _selectedItem = value;
                             //log('Combooooo: $_selectedItem');
-                            if(id == 'goal'){
-                              goal = value;
-                            }else if(id == 'mi'){
-                              monthlyIncome = value;
-                            }else{
-                              monthlyExpense = value;
+                            if (id == 'time') {
+                              time = value;
                             }
                           });
-
                         },
 
                         items: _dropdownValues
-                            .map((value) => DropdownMenuItem(
-                          child: Text(value),
-                          value: value,
-                        ))
+                            .map((value) =>
+                            DropdownMenuItem(
+                              child: Text(value),
+                              value: value,
+                            ))
                             .toList(),
 
                         isExpanded: true,
@@ -238,7 +229,10 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
                         clipper: MyCustomClipper(
                             h, MediaQuery.of(context).size.width),*/
                     /*child:*/ Container(
-                        width: MediaQuery.of(context).size.width,
+                        width: MediaQuery
+                            .of(context)
+                            .size
+                            .width,
                         height: h,
                         color: Colors.blue,
                         child: pw
@@ -289,23 +283,117 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
                         )),
 
 
+                    Padding(
+                        padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
+                        child: Container(
+                        width: w - 20,
+                        padding: EdgeInsets.fromLTRB(1, 1, 1, 1),
+                        alignment: Alignment.center,
+                        //padding: EdgeInsets.symmetric(horizontal: 10.0),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15.0),
+                          color: Colors.white,
+                          border: Border.all(
+                              color: Colors.white, style: BorderStyle.solid, width: 0.80),
+                        ),
+                        child: Container(
+                            child: Column(
+                              children: <Widget>[
 
-                    Padding(
-                        padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
-                        child: getRoundedBorderDropdown(Strings.dropdownValues, Strings.GOAL_FOR_ACTIVATION_TEXT, 'goal')
-                      //new RoundedBorderDropdown(Strings.dropdownValues, Strings.GOAL_FOR_ACTIVATION_TEXT)
+                                Container(
+                                  //color: Colors.red,
+                                    alignment: Alignment.bottomLeft,
+                                    child: Padding(
+                                      padding: EdgeInsets.fromLTRB(10, 0, 3, 0),
+                                      child: new Text(
+                                        'Date',
+                                        style: TextStyle(
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    )
+                                ),
+                                Container(
+                                  //color: Colors.red,
+                                    alignment: Alignment.bottomLeft,
+                                    child: Padding(
+                                      padding: EdgeInsets.fromLTRB(10, 0, 3, 0),
+                                      child: TextField(
+                                         controller: dateTextController,
+                                         enabled: false,
+                                         //initialValue: '-- Chose Date--',
+
+                                          //keyboardType: TextInputType.emailAddress,
+                                          decoration: InputDecoration(
+
+                                            hintStyle: TextStyle(color: Colors.grey),
+
+                                            enabledBorder: const OutlineInputBorder(
+                                                borderSide: const BorderSide(
+                                                    color: Colors.white, width: 10),
+                                                borderRadius: const BorderRadius.all(
+                                                    const Radius.circular(10.0))),
+                                            suffixIcon: Icon(Icons.arrow_drop_down),
+                                            //border: InputBorder.none
+                                            //labelText: 'Email'
+                                          )),
+                                    )
+                                ),
+
+
+                                //),
+                              ],
+                            ))
+
+                      //)
+
                     ),
+                    ),
+
+                    /*Padding(
+                      padding: EdgeInsets.fromLTRB(15, 1, 15, 1),
+                        child: Column(
+                          children: <Widget>[
+                            Container(
+                                color: Colors.white,
+                                width: w,
+                                padding: EdgeInsets.fromLTRB(15, 1, 1, 5),
+                                child: new Text('Date',
+                                  style: TextStyle(
+                                    color: Colors.grey,
+
+                                  ),
+                                )
+                            ),
+
+                            Container(
+                                color: Colors.white,
+                                width: w,
+                                padding: EdgeInsets.fromLTRB(15, 1, 1, 5),
+                                child: new Text('-- Choose Time --',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                  ),
+                                )
+                            ),
+
+                          ],
+
+                      )
+                    ),
+*/
+
+                    /*Padding(
+                        padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
+                        child: getRoundedBorderDropdown(Strings.dropdownValues, Strings.DATE, 'date')
+                      //new RoundedBorderDropdown(Strings.dropdownValues, Strings.GOAL_FOR_ACTIVATION_TEXT)
+                    ),*/
                     Padding(
                         padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
-                        child: getRoundedBorderDropdown(Strings.dropdownValues, Strings.MONTHLY_INCOME_TEXT,'mi')
+                        child: getRoundedBorderDropdown(
+                            Strings.dropDownTime, Strings.TIME, 'time')
                       //new RoundedBorderDropdown(Strings.dropdownValues, Strings.MONTHLY_INCOME_TEXT)
                     ),
-                    Padding(
-                        padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
-                        child:  getRoundedBorderDropdown(Strings.dropdownValues, Strings.MONTHLY_EXPENSE_TEXT,'me')
-                      //new RoundedBorderDropdown(Strings.dropdownValues, Strings.MONTHLY_EXPENSE_TEXT)
-                    ),
-
 
 
                     //),
@@ -317,7 +405,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
                           child: Container(
                             width: w,
                             padding: EdgeInsets.fromLTRB(16, 1, 16, 1),
-                            child: MaterialButton(
+                            child:  MaterialButton(
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(5.0),
                                     side: BorderSide(color: Colors.lightBlue)),

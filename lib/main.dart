@@ -255,18 +255,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
                   padding: EdgeInsets.fromLTRB(16, 3, 16, 3),
                   child: TextField(
                       controller: emailController,
-                      /*autovalidate: true,
-                      validator: (email) {
-                        if (email.isEmpty) {
-                          return 'Please enter some text';
-                        }else if(email.isNotEmpty){
-                          bool emailValid = RegExp(r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$').hasMatch(email);
-                          if(!emailValid){
-                            return 'Please enter valid email id';
-                          }
-                        }
-                        return null;
-                      },*/
 
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
