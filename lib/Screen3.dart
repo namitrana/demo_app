@@ -61,6 +61,28 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     //isPasswordVisible = false;
   }
+  String goal = Strings.dropdownValues.first;
+  String monthlyIncome = Strings.dropdownValues.first;
+  String monthlyExpense = Strings.dropdownValues.first;
+
+  List<String> list;
+  String label;
+  String _selectedItem = '';
+
+
+  String getSelectedItem(String id){
+    if(id=='goal'){
+      log("getSelectedItem()111: $goal");
+      return goal;
+    }else if(id == 'mi'){
+      log("getSelectedItem()222: $monthlyIncome");
+      return monthlyIncome;
+    }else{
+      log("getSelectedItem()333: $monthlyExpense");
+      return monthlyExpense;
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +100,104 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
+    void showMessage(message){
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text(message),
+        duration: Duration(seconds: 3),
+      ));
+    }
+
+    void validate(){
+      String message = '';
+      if(goal.contains('-') || goal.length == 0){
+          message = "Please select your goal";
+          showMessage(message);
+      }else if(monthlyIncome.contains("-") || monthlyIncome.length == 0){
+          message = "Please mention your monthly income";
+          showMessage(message);
+      }else if(monthlyExpense.contains('-') || monthlyExpense.length == 0){
+          message = "Please mention your monthly expense";
+          showMessage(message);
+      }else{
+        Navigator.of(context).pop();
+      }
+
+    }
+
+
+    Widget getRoundedBorderDropdown(List<String> _dropdownValues, String label, String id){
+      list = _dropdownValues;
+      this.label = label;
+      _selectedItem = _dropdownValues.first;
+     // goal = monthlyExpense = monthlyIncome = _selectedItem;
+
+      return Container(
+          width: w - 20,
+          padding: EdgeInsets.fromLTRB(1, 1, 1, 1),
+          alignment: Alignment.center,
+          //padding: EdgeInsets.symmetric(horizontal: 10.0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15.0),
+            color: Colors.white,
+            border: Border.all(
+                color: Colors.white, style: BorderStyle.solid, width: 0.80),
+          ),
+          child: Container(
+              child: Column(
+                children: <Widget>[
+
+                  Container(
+                    //color: Colors.red,
+                      alignment: Alignment.bottomLeft,
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(10, 0, 3, 0),
+                        child: new Text(
+                          label,
+                          style: TextStyle(
+                            color: Colors.grey,
+                          ),
+                        ),
+                      )),
+
+                  new DropdownButtonHideUnderline(
+                      child: DropdownButton(
+                        value: getSelectedItem(id),
+                        //    isDense: true,
+                        //hint: Text('DropdownButton Hint'),
+                        iconEnabledColor: Colors.grey,
+                        onChanged: (String value) {
+                          setState(() {
+                            _selectedItem = value;
+                            //log('Combooooo: $_selectedItem');
+                            if(id == 'goal'){
+                              goal = value;
+                            }else if(id == 'mi'){
+                              monthlyIncome = value;
+                            }else{
+                              monthlyExpense = value;
+                            }
+                          });
+
+                        },
+
+                        items: _dropdownValues
+                            .map((value) => DropdownMenuItem(
+                          child: Text(value),
+                          value: value,
+                        ))
+                            .toList(),
+
+                        isExpanded: true,
+                      ))
+                  //),
+                ],
+              ))
+
+        //)
+
+      );
+    }
+
 
     return Scaffold(
         appBar: AppBar(
@@ -149,15 +269,18 @@ class _MyHomePageState extends State<MyHomePage> {
 
                     Padding(
                       padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
-                            child: new RoundedBorderDropdown(Strings.dropdownValues, Strings.GOAL_FOR_ACTIVATION_TEXT)
+                            child: getRoundedBorderDropdown(Strings.dropdownValues, Strings.GOAL_FOR_ACTIVATION_TEXT, 'goal')
+                            //new RoundedBorderDropdown(Strings.dropdownValues, Strings.GOAL_FOR_ACTIVATION_TEXT)
                     ),
                     Padding(
                         padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
-                        child: new RoundedBorderDropdown(Strings.dropdownValues, Strings.MONTHLY_INCOME_TEXT)
+                        child: getRoundedBorderDropdown(Strings.dropdownValues, Strings.MONTHLY_INCOME_TEXT,'mi')
+                        //new RoundedBorderDropdown(Strings.dropdownValues, Strings.MONTHLY_INCOME_TEXT)
                     ),
                     Padding(
                         padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
-                        child:  new RoundedBorderDropdown(Strings.dropdownValues, Strings.MONTHLY_EXPENSE_TEXT)
+                        child:  getRoundedBorderDropdown(Strings.dropdownValues, Strings.MONTHLY_EXPENSE_TEXT,'me')
+                        //new RoundedBorderDropdown(Strings.dropdownValues, Strings.MONTHLY_EXPENSE_TEXT)
                     ),
 
 
@@ -177,16 +300,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 side: BorderSide(color: Colors.lightBlue)),
                             splashColor: Colors.blueAccent,
                             color: Colors.lightBlue,
-                            onPressed: () => {
-                                  if (_formKey.currentState.validate())
-                                    {
-                                      //log('Email is successful')
-                                      /* Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => Screen2()),
-    );*/
-                                    }
-                                },
+                            onPressed: validate,
                             child: Text('Next')),
                       ),
                     )),
