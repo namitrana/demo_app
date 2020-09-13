@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:demo_app/ProgressWidget.dart';
 import 'package:demo_app/label.dart';
+import 'package:demo_app/registration_details.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer';
@@ -207,7 +208,9 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         message = "Please select time";
         showMessage(message);
       }else{
-        message = "Success";
+        RegistrationDetails.setDate(dateTextController.text);
+        RegistrationDetails.setTime(time);
+        Navigator.of(context).pushNamed('/screen5');
         showMessage(message);
       }
    }

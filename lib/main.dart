@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:demo_app/Screen3.dart';
 import 'package:demo_app/Strings.dart';
 import 'package:demo_app/Screen4.dart';
+import 'package:demo_app/Screen5.dart';
+import 'package:demo_app/registration_details.dart';
 import 'dart:developer';
 
 void main() => runApp(MaterialApp(
@@ -19,6 +21,7 @@ void main() => runApp(MaterialApp(
         '/screen2': (context) => Screen2(),
         '/screen3': (context) => Screen3(),
         '/screen4': (context) => Screen4(),
+        '/screen5': (context) => Screen5(),
       },
     ));
 
@@ -99,7 +102,15 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
     super.dispose();
   }
 
+  void showMessage(message) {
+    Scaffold.of(context).showSnackBar(SnackBar(
+      content: Text(message),
+      duration: Duration(seconds: 3),
+    ));
+  }
+
   String _validateEmail(String email) {
+    log("asdasga: email:: $email");
     String temp;
     setState(() {
       if (email.isEmpty) {
@@ -118,7 +129,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
         }
 
         //to remove
-        emailErrorText = '';
+
       }
     });
 
@@ -130,7 +141,11 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
     String str = _validateEmail(emailController.text);
     log('//////////////// $str');
     if (str.length == 0) {
+      //emailController.text = '';
+      RegistrationDetails.setEmail(emailController.text);
       Navigator.of(context).pushNamed('/screen2');
+    }else if(str.length > 0){
+      showMessage(str);
     }
   }
 
@@ -255,12 +270,11 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
                   padding: EdgeInsets.fromLTRB(16, 3, 16, 3),
                   child: TextField(
                       controller: emailController,
-
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
                         hintText: 'Email',
                         hintStyle: TextStyle(color: Colors.grey),
-                        errorText: emailErrorText,
+                        //errorText: emailErrorText,
                         enabledBorder: const OutlineInputBorder(
                             borderSide: const BorderSide(
                                 color: Colors.white, width: 10),

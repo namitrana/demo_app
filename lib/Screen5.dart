@@ -2,28 +2,20 @@
 import 'dart:ui';
 
 import 'package:demo_app/ProgressWidget.dart';
+import 'package:demo_app/registration_details.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer';
-import 'package:demo_app/Screen3.dart';
 import 'package:demo_app/Strings.dart';
 
-void main() => runApp(
-    MaterialApp(title:  "Routing..",
-      initialRoute: '/screen2',
-      routes: {
-        '/screen2' : (context) => Screen2(),
-        '/screen3' : (context) =>  Screen3(),
-      },
-    )
-);
+void main() => runApp(Screen5());
 
-class Screen2 extends StatelessWidget {
+class Screen5 extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-      body: MyHomePage(title: 'Create Account'),
+      body: MyHomePage(title: 'Account Created'),
     );
     /*return MaterialApp(
       title: 'Demo',
@@ -82,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
     passwordController.text = '';
     isPasswordVisible = false;
 
-    pw = new ProgressWidget(1, true);
+    pw = new ProgressWidget(4, true);
     animationController = AnimationController(
       vsync: this,
       duration: Duration(seconds: 1),
@@ -124,13 +116,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
     return temp;
   }
 
-  void validatePassword() {
-    String str = _validatePassword(passwordController.text);
-    log('//////////////// $str');
-    if (str.length == 0) {
-      Navigator.of(context).pushNamed('/screen3');
-    }
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -150,46 +136,46 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
 
     Widget getTextWidget(var topText, var bottomText, int index) {
 
-       widget1 = Column(
+      widget1 = Column(
 
-            // mainAxisAlignment: MainAxisAlignment.center,
-            //crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.start,
+        // mainAxisAlignment: MainAxisAlignment.center,
+        //crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+
+            IndexedStack(
+              //key: bottomText,
+              alignment: Alignment.topCenter,
+              index: widgetIndex[index],
               children: <Widget>[
-
-                IndexedStack(
-                  //key: bottomText,
-                  alignment: Alignment.topCenter,
-                  index: widgetIndex[index],
-                  children: <Widget>[
-                    RichText(
-                      textAlign: TextAlign.center,
-                      text: new TextSpan(
-                          style: new TextStyle(
-                              fontSize: 28.0,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold),
-                          text: topText
-                      ),
-                    ),
-                    RawMaterialButton(
-                      onPressed: () {},
-                      elevation: 2.0,
-                      fillColor: Colors.green,
-                      highlightColor: Colors.white,
-                      child: new IconTheme(
-                        data: new IconThemeData(
-                            color: Colors.white),
-                        child: new Icon(Icons.check),
-                      ),
-                      //padding: EdgeInsets.all(5.0),
-                      shape: CircleBorder(),
-                    )
-                  ],
+                RichText(
+                  textAlign: TextAlign.center,
+                  text: new TextSpan(
+                      style: new TextStyle(
+                          fontSize: 28.0,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                      text: topText
+                  ),
                 ),
+                RawMaterialButton(
+                  onPressed: () {},
+                  elevation: 2.0,
+                  fillColor: Colors.green,
+                  highlightColor: Colors.white,
+                  child: new IconTheme(
+                    data: new IconThemeData(
+                        color: Colors.white),
+                    child: new Icon(Icons.check),
+                  ),
+                  //padding: EdgeInsets.all(5.0),
+                  shape: CircleBorder(),
+                )
+              ],
+            ),
 
 
-                /*RichText(
+            /*RichText(
                   textAlign: TextAlign.center,
                   text: new TextSpan(
                     children: <TextSpan>[
@@ -214,22 +200,22 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
                   ),
                 ),*/
 
-                RichText(
-                  textAlign: TextAlign.center,
-                  text: new TextSpan(
-                      text: bottomText,
-                      style: new TextStyle(
-                          fontSize: 12,
-                          color: Colors.white,
-                          fontWeight: FontWeight.normal)),
-                ),
+            RichText(
+              textAlign: TextAlign.center,
+              text: new TextSpan(
+                  text: bottomText,
+                  style: new TextStyle(
+                      fontSize: 12,
+                      color: Colors.white,
+                      fontWeight: FontWeight.normal)),
+            ),
 
 
 
-                //)
-              ]);
+            //)
+          ]);
 
-        return widget1;
+      return widget1;
     }
 
     return Scaffold(
@@ -275,7 +261,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
                               ),
                               children: <TextSpan>[
                                 new TextSpan(
-                                    text: 'Create Password\n',
+                                    text: 'Registration Success:\n',
                                     style: new TextStyle(
                                       fontWeight: FontWeight.bold,
                                     )),
@@ -284,13 +270,17 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
                                   // Child text spans will inherit styles from parent
                                   style: new TextStyle(
                                       fontSize: 14.0,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.normal),
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold),
                                   children: <TextSpan>[
                                     //, style: new TextStyle(fontWeight: FontWeight.bold, )
                                     new TextSpan(
                                         text:
-                                            'Password will be used to login to account'),
+                                        '\nCongratulations!! You have been registered with us with email ' + RegistrationDetails.getEmail() + '.\n'
+                                            ''
+                                            '\nThe video call has been scheduled as mentioned below:\n Date: ' + RegistrationDetails.getDate() + '\n'
+                                            ' Time: ' + RegistrationDetails.getTime() + '\n\n'
+                                            'Please check your registered email for more details.'),
                                   ],
                                 ),
                               ],
@@ -299,192 +289,20 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
                         )),
                     //),
                     //),
-                    Padding(
-                        padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
-                        /*child: Container(
-                    color: Colors.blue,*/
-                        child: TextField(
-                            onChanged: (text) {
-                              print("First text field: $text");
-                              bool isLetter = RegExp('[a-z]+').hasMatch(text);
-                              bool isCapLetter = RegExp('[A-Z]+').hasMatch(text);
-                              bool isNumber = RegExp('[0-9]+').hasMatch(text);
-                              print("isLetter: $isLetter" );
-                              print("isCapLetter: $isCapLetter" );
-
-                                setState(() {
 
 
-                                  if(isLetter) {
-                                    widgetIndex[0] = 1;
-                                  }else{
-                                    widgetIndex[0] = 0;
-                                  }
 
-                                  if(isCapLetter) {
-                                    widgetIndex[1] = 1;
-                                  }else{
-                                    widgetIndex[1] = 0;
-                                  }
-                                  if(isNumber) {
-                                    widgetIndex[2] = 1;
-                                  }else{
-                                    widgetIndex[2] = 0;
-                                  }
-                                  if(text.length > 9) {
-                                    widgetIndex[3] = 1;
-                                  }else{
-                                    widgetIndex[3] = 0;
-                                  }
-
-
-                                  int value = widgetIndex[0] + widgetIndex[1] +
-                                      widgetIndex[2] + widgetIndex[3];
-                                  if(text.length < 4){
-                                      complexityText = "Very Weak";
-                                  }else{
-                                    switch(value){
-                                      case 1:
-                                        complexityText = 'Very Weak';
-                                        break;
-                                      case 2:
-                                        complexityText = 'Weak';
-                                        break;
-                                      case 3:
-                                        complexityText = 'Strong';
-                                        break;
-                                      case 4:
-                                        complexityText = 'Very Strong';
-                                        break;
-                                    }
-
-                                  }
-
-                                });
-
-                            },
-                          controller: passwordController,
-                            /*autovalidate: true,
-
-                      validator: (password) {
-                        if (password.isEmpty) {
-                          return 'Please enter some text';
-                        } else if(password.length < 6){
-                          return 'Password must have 6 or more characters';
-                        }
-                      },*/
-                            keyboardType: TextInputType.text,
-                            obscureText: !isPasswordVisible,
-                            decoration: InputDecoration(
-                              hintText: 'Create Password',
-                              errorText: passwordErrorText,
-                              hintStyle: TextStyle(color: Colors.grey),
-                              fillColor: Colors.white,
-                              filled: true,
-
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10.0)),
-                              ),
-                              /*border: OutlineInputBorder(
-                          // width: 0.0 produces a thin "hairline" border
-                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                            borderSide: BorderSide(color: Colors.white)
-                            //borderSide: BorderSide.none
-                          borderSide: const BorderSide(),
-                        ),*/
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  // Based on passwordVisible state choose the icon
-                                  isPasswordVisible
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
-                                  color: Theme.of(context).primaryColorDark,
-                                ),
-                                onPressed: () {
-                                  // Update the state i.e. toogle the state of passwordVisible variable
-                                  setState(() {
-                                    isPasswordVisible = !isPasswordVisible;
-                                  });
-                                },
-                              ),
-                              //border: InputBorder.
-                            ))),
-
-                   /* Expanded(
-                      child: */Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: EdgeInsets.all(16.0),
-                            child: RichText(
-                              text: new TextSpan(
-                                // Note: Styles for TextSpans must be explicitly defined.
-                                // Child text spans will inherit styles from parent
-                                style: new TextStyle(
-                                  fontSize: 24.0,
-                                  color: Colors.white,
-                                ),
-                                children: <TextSpan>[
-                                  new TextSpan(
-                                    // Note: Styles for TextSpans must be explicitly defined.
-                                    // Child text spans will inherit styles from parent
-                                    style: new TextStyle(
-                                        fontSize: 14.0,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.normal),
-                                    children: <TextSpan>[
-                                      //, style: new TextStyle(fontWeight: FontWeight.bold, )
-                                      new TextSpan(text: 'Complexity: '),
-                                      new TextSpan(
-                                          text: complexityText,
-                                          style: new TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.orange,
-                                              fontWeight: FontWeight.bold)),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          )),
-                    //),
 
                     //
                     /*Expanded(
                       child: */
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        for ( int i = 0; i < topTextList.length; i++ )
-                            //passwordStatusList[i]
 
-                          getTextWidget(topTextList[i], bottomTextList[i], i)
-
-                      ],
-                    ),
                     //),
 
-                    Expanded(
-                        child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Container(
-                        width: w,
-                        padding: EdgeInsets.fromLTRB(16, 1, 16, 1),
-                        child: MaterialButton(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                side: BorderSide(color: Colors.lightBlue)),
-                            splashColor: Colors.blueAccent,
-                            color: Colors.lightBlue,
-                            onPressed: validatePassword,
-                            child: Text('Next')),
-                      ),
-                    )),
+
                   ],
                 ) //column,
-                ))//form
+            ))//form
     );
   }
 }
