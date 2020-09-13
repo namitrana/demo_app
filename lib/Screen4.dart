@@ -101,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   /// This will be called every time while displaying day in calender.
   bool _decideWhichDayToEnable(DateTime day) {
     if ((day.isAfter(DateTime.now().subtract(Duration(days: 1))) &&
-        day.isBefore(DateTime.now().add(Duration(days: 10))))) {
+        day.isBefore(DateTime.now().add(Duration(days: 30))))) {
       return true;
     }
     return false;
@@ -112,8 +112,9 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     final DateTime picked = await showDatePicker(
       context: context,
       initialDate: selectedDate,
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2025),
+      firstDate: DateTime(DateTime.now().year),
+      lastDate: DateTime(DateTime.now().year + 3),
+      selectableDayPredicate: _decideWhichDayToEnable,
       builder: (context, child) {
         return Theme(
           data: ThemeData.light(),
@@ -197,20 +198,30 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     }
 
     void validate() {
-      /*String message = '';
-      if (time.contains('-') || time.length == 0) {
+      String message = '';
+
+      if(dateTextController.value.toString().indexOf('Choose') > -1){
+        message = "Please select date";
+        showMessage(message);
+      }else if( time.indexOf("-") > -1){
         message = "Please select time";
         showMessage(message);
-      } else {
-        Navigator.of(context).pushNamed('/screen4');
-      }*/
+      }else{
+        message = "Success";
+        showMessage(message);
+      }
+   }
+
+
+
+    void _showDatePicker(){
+      log("showdatepicker...............");
       if(Platform.isAndroid){
         buildMaterialDatePicker(context);
       }else if(Platform.isAndroid){
         buildCupertinoDatePicker(context);
       }
     }
-
 
     Widget getRoundedBorderDropdown(List<String> _dropdownValues, String label,
         String id) {
@@ -392,25 +403,33 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                     alignment: Alignment.bottomLeft,
                                     child: Padding(
                                       padding: EdgeInsets.fromLTRB(10, 0, 3, 0),
-                                      child: TextField(
-                                         controller: dateTextController,
-                                         enabled: false,
-                                         //initialValue: '-- Chose Date--',
+                                      child: InkWell(
+                                        onTap: _showDatePicker,
+                                        child: TextField(
 
-                                          //keyboardType: TextInputType.emailAddress,
-                                          decoration: InputDecoration(
+                                            controller: dateTextController,
+                                            enabled: false,
+                                            //initialValue: '-- Chose Date--',
 
-                                            hintStyle: TextStyle(color: Colors.grey),
+                                            //keyboardType: TextInputType.emailAddress,
+                                            decoration: InputDecoration(
 
-                                            enabledBorder: const OutlineInputBorder(
-                                                borderSide: const BorderSide(
-                                                    color: Colors.white, width: 10),
-                                                borderRadius: const BorderRadius.all(
-                                                    const Radius.circular(10.0))),
-                                            suffixIcon: Icon(Icons.arrow_drop_down),
-                                            //border: InputBorder.none
-                                            //labelText: 'Email'
-                                          )),
+                                              hintStyle: TextStyle(color: Colors.grey),
+
+                                              enabledBorder: const OutlineInputBorder(
+                                                  borderSide: const BorderSide(
+                                                      color: Colors.white, width: 10),
+                                                  borderRadius: const BorderRadius.all(
+                                                      const Radius.circular(10.0))),
+                                              suffixIcon: new IconButton(
+                                                icon: new Icon(Icons.arrow_drop_down),
+                                                onPressed: _showDatePicker
+                                              )
+                                              //border: InputBorder.none
+                                              //labelText: 'Email'
+                                            )
+                                        ),
+                                      ),
                                     )
                                 ),
 
