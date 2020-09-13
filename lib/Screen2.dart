@@ -88,7 +88,10 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
         passwordErrorText = "Please enter some text";
       }else if(password.length < 9){
         passwordErrorText = "Minimum 9 letters required";
-      }else if(hasDigits & hasUppercase & hasLowercase & hasSpecialCharacters){
+      }else if(password.length > 40){
+        passwordErrorText = "Password length cannot exceed 40 characters";
+      }
+      else if(hasDigits & hasUppercase & hasLowercase & hasSpecialCharacters){
         passwordErrorText = '';
       }else{
         passwordErrorText = "Invalid password";
