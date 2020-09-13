@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer';
 import 'package:demo_app/Strings.dart';
+import 'package:flutter/services.dart';
 
 void main() => runApp(Screen5());
 
@@ -89,6 +90,23 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
   void dispose() {
     animationController.dispose();
     super.dispose();
+  }
+
+  void showMessage(message){
+    Scaffold.of(context).showSnackBar(SnackBar(
+      content: Text(message),
+      duration: Duration(seconds: 3),
+    ));
+  }
+
+  void validate(){
+    try {
+      SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+    }on Exception{
+        showMessage('System could not close the app. Please press HOME button...');
+
+
+    }
   }
 
   String _validatePassword(String password) {
@@ -285,6 +303,24 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
                                 ),
                               ],
                             ),
+                          ),
+                        )),
+
+
+                    Expanded(
+                        child: Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Container(
+                            width: w,
+                            padding: EdgeInsets.fromLTRB(16, 1, 16, 1),
+                            child:  MaterialButton(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    side: BorderSide(color: Colors.lightBlue)),
+                                splashColor: Colors.blueAccent,
+                                color: Colors.lightBlue,
+                                onPressed: validate,
+                                child: Text('Exit App')),
                           ),
                         )),
                     //),
