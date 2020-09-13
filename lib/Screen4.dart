@@ -1,13 +1,12 @@
-//import 'dart:html';
-import 'dart:ui';
 
+
+///  This widget is used to display date and time to schedule a video call
+import 'dart:ui';
 import 'package:demo_app/ProgressWidget.dart';
-import 'package:demo_app/label.dart';
 import 'package:demo_app/registration_details.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer';
-import 'package:demo_app/RoundedBorderDropDown.dart';
 import 'package:demo_app/Strings.dart';
 import 'dart:io' show Platform;
 
@@ -20,36 +19,12 @@ class Screen4 extends StatelessWidget {
     return Scaffold(
       body: MyHomePage(title: 'Create Account'),
     );
-    /*return MaterialApp(
-      title: 'Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Create Account'),
-    );*/
+
   }
 }
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
 
   final String title;
 
@@ -98,7 +73,9 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     }
   }
 
-  /// This decides which day will be enabled
+  /// This decides which day will be enabled.
+  ///
+  /// It will allow users to schedule a time from current day to next 30 days
   /// This will be called every time while displaying day in calender.
   bool _decideWhichDayToEnable(DateTime day) {
     if ((day.isAfter(DateTime.now().subtract(Duration(days: 1))) &&
@@ -133,6 +110,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       });
   }
 
+  /// Returns date part from date-time format of a date
   String getDateOnly(String dateTime){
     int idx = dateTime.indexOf(" ");
     String date = '';
@@ -141,6 +119,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     }
     return date;
   }
+
   /// This builds cupertion date picker in iOS
   buildCupertinoDatePicker(BuildContext context) {
     showModalBottomSheet(
@@ -183,14 +162,10 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         .size
         .width;
     log('height in top: $h');
-    int _widgetIndex = 0;
-    String _chosenValue = '';
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+    /*int _widgetIndex = 0;
+    String _chosenValue = '';*/
+
+    /// This is used to display error messages in SnackBar
     void showMessage(message) {
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text(message),
@@ -198,25 +173,29 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       ));
     }
 
+    /// Validates date and time combo-box
+    ///
+    /// Displays error message if there is any problem in validation
+    /// If date and time combo-boxes are selected, it takes user to final screen
     void validate() {
       String message = '';
 
       if(dateTextController.value.toString().indexOf('Choose') > -1){
-        message = "Please select date";
+        message = Strings.SELECT_DATE_ERROR;
         showMessage(message);
       }else if( time.indexOf("-") > -1){
-        message = "Please select time";
+        message = Strings.SELECT_TIME_ERROR;
         showMessage(message);
       }else{
         RegistrationDetails.setDate(dateTextController.text);
         RegistrationDetails.setTime(time);
         Navigator.of(context).pushNamed('/screen5');
-        showMessage(message);
+        //showMessage(message);
       }
    }
 
 
-
+    /// Displays date picker specific to the platform(Android/iOS)
     void _showDatePicker(){
       log("showdatepicker...............");
       if(Platform.isAndroid){
@@ -226,6 +205,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       }
     }
 
+
+    /// Returns the rounded combo-box used to display time on this page
     Widget getRoundedBorderDropdown(List<String> _dropdownValues, String label,
         String id) {
       list = _dropdownValues;
@@ -311,12 +292,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    /*Stack(
-                  children: <Widget>[*/
-                    /* ClipPath(
-                        clipper: MyCustomClipper(
-                            h, MediaQuery.of(context).size.width),*/
-                    /*child:*/ Container(
+                    /// Displays the top part with circular container and horizontal lines
+                    Container(
                         width: MediaQuery
                             .of(context)
                             .size
@@ -325,12 +302,9 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                         color: Colors.blue,
                         child: pw
                     ),
-                    // ),
 
-                    /*Expanded(
-                  child: Container(
-                    color: Colors.blue,
-                    child:*/
+
+                    /// Displays the text messages which asks user to schedule the call
                     Align(
                         alignment: Alignment.centerLeft,
                         child: Padding(
@@ -360,7 +334,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                     //, style: new TextStyle(fontWeight: FontWeight.bold, )
                                     new TextSpan(
                                         text:
-                                        'Choose the date and time that you prefered. '
+                                        'Choose the date and time that you preferred. '
                                             'we will send a link via email to make a video'
                                             'call on the scheduled date and time.'),
                                   ],
@@ -371,6 +345,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                         )),
 
 
+                    /// Date picker UI
                     Padding(
                         padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
                         child: Container(
@@ -387,7 +362,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                         child: Container(
                             child: Column(
                               children: <Widget>[
-
                                 Container(
                                   //color: Colors.red,
                                     alignment: Alignment.bottomLeft,
@@ -446,44 +420,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                     ),
                     ),
 
-                    /*Padding(
-                      padding: EdgeInsets.fromLTRB(15, 1, 15, 1),
-                        child: Column(
-                          children: <Widget>[
-                            Container(
-                                color: Colors.white,
-                                width: w,
-                                padding: EdgeInsets.fromLTRB(15, 1, 1, 5),
-                                child: new Text('Date',
-                                  style: TextStyle(
-                                    color: Colors.grey,
-
-                                  ),
-                                )
-                            ),
-
-                            Container(
-                                color: Colors.white,
-                                width: w,
-                                padding: EdgeInsets.fromLTRB(15, 1, 1, 5),
-                                child: new Text('-- Choose Time --',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                  ),
-                                )
-                            ),
-
-                          ],
-
-                      )
-                    ),
-*/
-
-                    /*Padding(
-                        padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
-                        child: getRoundedBorderDropdown(Strings.dropdownValues, Strings.DATE, 'date')
-                      //new RoundedBorderDropdown(Strings.dropdownValues, Strings.GOAL_FOR_ACTIVATION_TEXT)
-                    ),*/
+                    /// Time drop-down
                     Padding(
                         padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
                         child: getRoundedBorderDropdown(
@@ -492,9 +429,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                     ),
 
 
-                    //),
-                    //),
-
+                    /// Next button
                     Expanded(
                         child: Align(
                           alignment: Alignment.bottomCenter,

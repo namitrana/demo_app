@@ -1,3 +1,5 @@
+/// Third step in the registration process used to select Goal, monthly income and monthly expense
+
 //import 'dart:html';
 import 'dart:ui';
 
@@ -17,36 +19,12 @@ class Screen3 extends StatelessWidget {
     return  Scaffold(
       body: MyHomePage(title: 'Create Account'),
     );
-    /*return MaterialApp(
-      title: 'Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Create Account'),
-    );*/
+
   }
 }
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
 
   final String title;
 
@@ -90,6 +68,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
   String _selectedItem = '';
 
 
+  /// Used to return the change value of the combo box with reference to its id
   String getSelectedItem(String id){
     if(id=='goal'){
       log("getSelectedItem()111: $goal");
@@ -114,12 +93,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
     log('height in top: $h');
     int _widgetIndex = 0;
     String _chosenValue = '';
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+
+    /// Dislays the error message in the snackbar
     void showMessage(message){
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text(message),
@@ -127,16 +102,17 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
       ));
     }
 
+    /// Validates the combo-box and displays error message if not selected
     void validate(){
       String message = '';
       if(goal.contains('-') || goal.length == 0){
-          message = "Please select your goal";
+          message = Strings.SELECT_GOAL_ERROR;
           showMessage(message);
       }else if(monthlyIncome.contains("-") || monthlyIncome.length == 0){
-          message = "Please mention your monthly income";
+          message = Strings.SELECT_MI_ERROR;
           showMessage(message);
       }else if(monthlyExpense.contains('-') || monthlyExpense.length == 0){
-          message = "Please mention your monthly expense";
+          message = Strings.SELECT_ME_ERROR;
           showMessage(message);
       }else{
         Navigator.of(context).pushNamed('/screen4');
@@ -145,6 +121,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
     }
 
 
+    /// Returns the widget used to display the rounded drop down list
     Widget getRoundedBorderDropdown(List<String> _dropdownValues, String label, String id){
       list = _dropdownValues;
       this.label = label;

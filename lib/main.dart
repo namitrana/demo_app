@@ -1,8 +1,11 @@
-//import 'dart:html';
+
+/// This is a dummy project used to register a user and schedule a video call
+///
+/// Author: Namit Rana
+///  Date: 13/09/2020
+
 import 'dart:ui';
-
 import 'package:demo_app/ProgressWidget.dart';
-
 import 'package:demo_app/Screen2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +16,7 @@ import 'package:demo_app/Screen5.dart';
 import 'package:demo_app/registration_details.dart';
 import 'dart:developer';
 
+/// Starting point of the project
 void main() => runApp(MaterialApp(
       title: Strings.HOME_PAGE_TITLE,
       initialRoute: '/',
@@ -25,6 +29,8 @@ void main() => runApp(MaterialApp(
       },
     ));
 
+
+
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -32,76 +38,53 @@ class MyApp extends StatelessWidget {
     return Scaffold(
       body: MyHomePage(title: Strings.HOME_PAGE_TITLE),
     );
-    /*return MaterialApp(
-
-      title: 'Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Demo App'),
-    );*/
   }
 }
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
-
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
+
+/// Determines the first page of the project to input email
+class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
+
   final _formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   TextEditingController emailController = TextEditingController();
-
   String emailErrorText = '';
-
   AnimationController animationController;
   ProgressWidget pw;
+
   @override
   void initState() {
     emailController.text = '';
     emailErrorText = '';
-
     pw = new ProgressWidget(0, true);
+
+    /// This code needs improvements as we are [animationController] even though
+    /// it is not required.  To be improved later.
     animationController = AnimationController(
       vsync: this,
       duration: Duration(seconds: 1),
     )
       ..forward()
       ..repeat(reverse: true);
-
     pw.setAnimationController(animationController);
+    super.initState();
   }
 
   @override
   void dispose() {
-    //emailController.text = '';
+    /// Dispose animationController without fail
     animationController.dispose();
     super.dispose();
   }
 
+  /// This method is used to display the SnackBar to display error messages
   void showMessage(message) {
     Scaffold.of(context).showSnackBar(SnackBar(
       content: Text(message),
@@ -109,8 +92,10 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
     ));
   }
 
+
+  /// Validates [email] and returns email validity status
   String _validateEmail(String email) {
-    log("asdasga: email:: $email");
+    //log("asdasga: email:: $email");
     String temp;
     setState(() {
       if (email.isEmpty) {
@@ -127,9 +112,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
           log("Email Error Text when success:" +
               emailErrorText.length.toString());
         }
-
-        //to remove
-
       }
     });
 
@@ -137,38 +119,39 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
     return temp;
   }
 
+  /// Validates the email.
+  ///
+  /// Takes the user to the next screen if valid email is inputted
+  /// Shows error message if the email has invalid format
   void validateEmail() {
     String str = _validateEmail(emailController.text);
-    log('//////////////// $str');
     if (str.length == 0) {
       //emailController.text = '';
       RegistrationDetails.setEmail(emailController.text);
       Navigator.of(context).pushNamed('/screen2');
-    }else if(str.length > 0){
+    } else if (str.length > 0) {
       showMessage(str);
     }
   }
 
-  void showInSnackBar(String value) {
-    _scaffoldKey.currentState
-        .showSnackBar(new SnackBar(content: new Text(value)));
-  }
+
 
   @override
   Widget build(BuildContext context) {
     //var h = (MediaQuery.of(context).size.height - 88) / 4.5;
     //var h = (MediaQuery.of(context).size.height - 88) * .2;
+
+    /// Height of the status bar of the application
     var statusBarHeight = MediaQuery.of(context).padding.top;
+
+    /// 20% of the height which is used to occupy the top area with circular widget
     var h = (MediaQuery.of(context).size.height - statusBarHeight) * .2;
+    /// Width of the screen
     var w = MediaQuery.of(context).size.width;
     log('height in top: $h');
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
 
+
+    /// Returns a widget with round Container and a text within
     Widget _getRoundContainer(var text) {
       return Container(
           decoration:
@@ -181,6 +164,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
           ));
     }
 
+    /// Returns a widget with Container as a horizontal line
     Widget _getHorizontalLine() {
       var circlesWidth = ((h - (h * .5)) / 2) * 4;
       var remainWidth = w - circlesWidth;
@@ -194,7 +178,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
       );
     }
 
-    String text1;
+
     return Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
@@ -209,6 +193,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
               children: <Widget>[
                 Stack(
                   children: <Widget>[
+
+                    // Top widget to display circular containers with horizontal lines
                     ClipPath(
                         clipper: MyCustomClipper(
                             h, MediaQuery.of(context).size.width),
@@ -219,6 +205,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
                             child: pw)),
                   ],
                 ),
+
+                // Displays the text just below the above mentioned widget
                 Expanded(
                     child: Align(
                         alignment: Alignment.centerLeft,
@@ -257,15 +245,16 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
                                   children: <TextSpan>[
                                     //, style: new TextStyle(fontWeight: FontWeight.bold, )
                                     new TextSpan(
-                                        text:
-                                            '\n\nWelcome to The Bank of The Future.'
-                                            '\nManage and track your accounts\non the go.'),
+                                        text:Strings.WELCOME_TEXT
+                                            ),
                                   ],
                                 ),
                               ],
                             ),
                           ),
                         ))),
+
+                // Email text box widget
                 Padding(
                   padding: EdgeInsets.fromLTRB(16, 3, 16, 3),
                   child: TextField(
@@ -285,6 +274,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
                         //labelText: 'Email'
                       )),
                 ),
+
+                // Displays the button at the bottom
                 Expanded(
                     child: Align(
                   alignment: Alignment.bottomCenter,
@@ -308,6 +299,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
   }
 }
 
+
+/// This class is used to provide a curve border to a rectangular Container.
 class MyCustomClipper extends CustomClipper<Path> {
   var h, w;
 

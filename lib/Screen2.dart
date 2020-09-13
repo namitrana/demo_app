@@ -1,4 +1,4 @@
-//import 'dart:html';
+/// This class is used to display a UI to create a password
 import 'dart:ui';
 
 import 'package:demo_app/ProgressWidget.dart';
@@ -19,42 +19,16 @@ void main() => runApp(
 );
 
 class Screen2 extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
       body: MyHomePage(title: 'Create Account'),
     );
-    /*return MaterialApp(
-      title: 'Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Create Account'),
-    );*/
   }
 }
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
 
   final String title;
 
@@ -76,6 +50,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
 
   AnimationController animationController;
   ProgressWidget pw;
+
   //List<PasswordStatusState> passwordStatusList = new List<PasswordStatusState>();
   @override
   void initState() {
@@ -99,6 +74,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
     super.dispose();
   }
 
+  /// Validates password and returns a text with password validation status
   String _validatePassword(String password) {
     bool hasUppercase = password.contains(new RegExp(r'[A-Z]'));
     bool hasDigits = password.contains(new RegExp(r'[0-9]'));
@@ -111,25 +87,36 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
       if(password.length == 0){
         passwordErrorText = "Please enter some text";
       }else if(password.length < 9){
-        passwordErrorText = "Minimum 8 letters required";
+        passwordErrorText = "Minimum 9 letters required";
       }else if(hasDigits & hasUppercase & hasLowercase & hasSpecialCharacters){
         passwordErrorText = '';
       }else{
         passwordErrorText = "Invalid password";
       }
-
     });
-
     temp = passwordErrorText;
     return temp;
   }
 
+  /// Validates the password
+  ///
+  /// If the password is correct, the control is taken to the next page
+  /// Display the error message using SnackBar
   void validatePassword() {
     String str = _validatePassword(passwordController.text);
     log('//////////////// $str');
     if (str.length == 0) {
       Navigator.of(context).pushNamed('/screen3');
+    }else{
+      showMessage(str);
     }
+  }
+
+  void showMessage(message) {
+    Scaffold.of(context).showSnackBar(SnackBar(
+      content: Text(message),
+      duration: Duration(seconds: 3),
+    ));
   }
 
   @override
@@ -141,13 +128,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
     var w = MediaQuery.of(context).size.width;
     log('height in top: $h');
 
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
 
+    /// Returns the UI used to display password complexity and its requirements.
     Widget getTextWidget(var topText, var bottomText, int index) {
 
        widget1 = Column(
@@ -188,32 +170,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
                   ],
                 ),
 
-
-                /*RichText(
-                  textAlign: TextAlign.center,
-                  text: new TextSpan(
-                    children: <TextSpan>[
-                      new TextSpan(
-                        style: new TextStyle(
-                            fontSize: 28.0,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                        children: <TextSpan>[
-                          //, style: new TextStyle(fontWeight: FontWeight.bold, )
-                          new TextSpan(text: topText),
-
-                          new TextSpan(
-                          text: bottomText,
-                          style: new TextStyle(
-                              fontSize: 12,
-                              color: Colors.white,
-                              fontWeight: FontWeight.normal)),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),*/
-
                 RichText(
                   textAlign: TextAlign.center,
                   text: new TextSpan(
@@ -245,22 +201,16 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    /*Stack(
-                  children: <Widget>[*/
-                    /* ClipPath(
-                        clipper: MyCustomClipper(
-                            h, MediaQuery.of(context).size.width),*/
-                    /*child:*/ Container(
+
+                     /// Displays the top part with circular widget and horizontal lines
+                     Container(
                         width: MediaQuery.of(context).size.width,
                         height: h,
                         color: Colors.blue,
-                        child: pw),
-                    // ),
+                        child: pw
+                     ),
 
-                    /*Expanded(
-                  child: Container(
-                    color: Colors.blue,
-                    child:*/
+                    /// Displays some texts below the above widget
                     Align(
                         alignment: Alignment.centerLeft,
                         child: Padding(
@@ -297,13 +247,16 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
                             ),
                           ),
                         )),
-                    //),
-                    //),
+
+
+                    /// Shows the [TextField] used to enter the password
                     Padding(
                         padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
                         /*child: Container(
                     color: Colors.blue,*/
                         child: TextField(
+
+                            /// Logic to display password complexity. Code needs improvements.
                             onChanged: (text) {
                               print("First text field: $text");
                               bool isLetter = RegExp('[a-z]+').hasMatch(text);
@@ -313,7 +266,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
                               print("isCapLetter: $isCapLetter" );
 
                                 setState(() {
-
 
                                   if(isLetter) {
                                     widgetIndex[0] = 1;
@@ -331,7 +283,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
                                   }else{
                                     widgetIndex[2] = 0;
                                   }
-                                  if(text.length > 9) {
+                                  if(text.length >= 9) {
                                     widgetIndex[3] = 1;
                                   }else{
                                     widgetIndex[3] = 0;
@@ -340,21 +292,21 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
 
                                   int value = widgetIndex[0] + widgetIndex[1] +
                                       widgetIndex[2] + widgetIndex[3];
-                                  if(text.length < 4){
-                                      complexityText = "Very Weak";
+                                  if(text.length <= 5){
+                                      complexityText = Strings.PASSWORD_COMPLEXITY_VERY_WEAK;
                                   }else{
                                     switch(value){
                                       case 1:
-                                        complexityText = 'Very Weak';
+                                        complexityText = Strings.PASSWORD_COMPLEXITY_VERY_WEAK;
                                         break;
                                       case 2:
-                                        complexityText = 'Weak';
+                                        complexityText = Strings.PASSWORD_COMPLEXITY_WEAK;
                                         break;
                                       case 3:
-                                        complexityText = 'Strong';
+                                        complexityText = Strings.PASSWORD_COMPLEXITY_STRONG;
                                         break;
                                       case 4:
-                                        complexityText = 'Very Strong';
+                                        complexityText = Strings.PASSWORD_COMPLEXITY_VERY_STRONG;
                                         break;
                                     }
 
@@ -364,20 +316,12 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
 
                             },
                           controller: passwordController,
-                            /*autovalidate: true,
 
-                      validator: (password) {
-                        if (password.isEmpty) {
-                          return 'Please enter some text';
-                        } else if(password.length < 6){
-                          return 'Password must have 6 or more characters';
-                        }
-                      },*/
                             keyboardType: TextInputType.text,
                             obscureText: !isPasswordVisible,
                             decoration: InputDecoration(
                               hintText: 'Create Password',
-                              errorText: passwordErrorText,
+                              //errorText: passwordErrorText,
                               hintStyle: TextStyle(color: Colors.grey),
                               fillColor: Colors.white,
                               filled: true,
@@ -387,13 +331,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(10.0)),
                               ),
-                              /*border: OutlineInputBorder(
-                          // width: 0.0 produces a thin "hairline" border
-                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                            borderSide: BorderSide(color: Colors.white)
-                            //borderSide: BorderSide.none
-                          borderSide: const BorderSide(),
-                        ),*/
+
                               suffixIcon: IconButton(
                                 icon: Icon(
                                   // Based on passwordVisible state choose the icon
@@ -412,8 +350,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
                               //border: InputBorder.
                             ))),
 
-                   /* Expanded(
-                      child: */Align(
+                   /// Area that determines password complexity
+                  Align(
                           alignment: Alignment.centerLeft,
                           child: Padding(
                             padding: EdgeInsets.all(16.0),
@@ -448,24 +386,20 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
                               ),
                             ),
                           )),
-                    //),
 
-                    //
-                    /*Expanded(
-                      child: */
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         for ( int i = 0; i < topTextList.length; i++ )
-                            //passwordStatusList[i]
-
                           getTextWidget(topTextList[i], bottomTextList[i], i)
-
                       ],
                     ),
-                    //),
 
+
+
+                    /// Displays the next button
                     Expanded(
                         child: Align(
                       alignment: Alignment.bottomCenter,
@@ -490,124 +424,3 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
 }
 
 
-/*class PasswordStatus extends StatefulWidget{
-
-  static String topText = '';
-  static String bottomText = '';
-  PasswordStatus(String topText1, String bottomText1){
-    topText = topText1;
-    bottomText = bottomText1;
-  }
-
-  PasswordStatusState ps = new PasswordStatusState(topText, bottomText);
-  @override
-  PasswordStatusState createState() => ps;
-
-}*/
-
-//class PasswordStatusState extends State<PasswordStatus>{
-/*
-class PasswordStatusState extends StatelessWidget{
-
-  String topText = '';
-  String bottomText = '';
-
-  int _widgetIndex = 0;
-
-  void setWidgetIndex(int w){
-    this._widgetIndex = w;
-  }
-
-  PasswordStatusState(String topText, String bottomText){
-    this.topText = topText;
-    this.bottomText = bottomText;
-
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return Column(
-
-      // mainAxisAlignment: MainAxisAlignment.center,
-      //crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-
-          IndexedStack(
-            //key: bottomText,
-            alignment: Alignment.topCenter,
-            index: _widgetIndex,
-            children: <Widget>[
-              RichText(
-                textAlign: TextAlign.center,
-                text: new TextSpan(
-                    style: new TextStyle(
-                        fontSize: 28.0,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
-                    text: topText
-                ),
-              ),
-              RawMaterialButton(
-                onPressed: () {},
-                elevation: 2.0,
-                fillColor: Colors.green,
-                highlightColor: Colors.white,
-                child: new IconTheme(
-                  data: new IconThemeData(
-                      color: Colors.white),
-                  child: new Icon(Icons.check),
-                ),
-                //padding: EdgeInsets.all(5.0),
-                shape: CircleBorder(),
-              )
-            ],
-          ),
-
-
-          */
-/*RichText(
-                  textAlign: TextAlign.center,
-                  text: new TextSpan(
-                    children: <TextSpan>[
-                      new TextSpan(
-                        style: new TextStyle(
-                            fontSize: 28.0,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                        children: <TextSpan>[
-                          //, style: new TextStyle(fontWeight: FontWeight.bold, )
-                          new TextSpan(text: topText),
-
-                          new TextSpan(
-                          text: bottomText,
-                          style: new TextStyle(
-                              fontSize: 12,
-                              color: Colors.white,
-                              fontWeight: FontWeight.normal)),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),*//*
-
-
-          RichText(
-            textAlign: TextAlign.center,
-            text: new TextSpan(
-                text: bottomText,
-                style: new TextStyle(
-                    fontSize: 12,
-                    color: Colors.white,
-                    fontWeight: FontWeight.normal)),
-          ),
-
-
-
-          //)
-        ]);
-  }
-
-}
-*/
