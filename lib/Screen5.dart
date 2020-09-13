@@ -1,4 +1,4 @@
-/// Displays the final page after registration
+/// Displays the final page with registration details
 import 'dart:ui';
 
 import 'package:demo_app/ProgressWidget.dart';
@@ -6,7 +6,6 @@ import 'package:demo_app/registration_details.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer';
-import 'package:demo_app/Strings.dart';
 import 'package:flutter/services.dart';
 
 void main() => runApp(Screen5());
@@ -42,23 +41,13 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
   final _formKey = GlobalKey<FormState>();
-  List<String> topTextList = ['a', 'A', '123', '9+'];
-  List<String> bottomTextList = ['Lowercase', 'Uppercase', 'Number', 'Characters'];
-  List<int> widgetIndex = [0, 0, 0, 0];
-  bool isPasswordVisible;
-  String complexityText = '';
 
-  TextEditingController passwordController = TextEditingController();
-  Widget widget1;
-  String passwordErrorText = '';
 
   AnimationController animationController;
   ProgressWidget pw;
-  //List<PasswordStatusState> passwordStatusList = new List<PasswordStatusState>();
+
   @override
   void initState() {
-    passwordController.text = '';
-    isPasswordVisible = false;
 
     pw = new ProgressWidget(4, true);
     animationController = AnimationController(
@@ -77,6 +66,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
     super.dispose();
   }
 
+
+  /// Displays error message using SnackBar
   void showMessage(message){
     Scaffold.of(context).showSnackBar(SnackBar(
       content: Text(message),
@@ -84,41 +75,15 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
     ));
   }
 
-  void validate(){
+
+  /// Exits the app
+  void exitApp(){
     try {
       SystemChannels.platform.invokeMethod('SystemNavigator.pop');
     }on Exception{
         showMessage('System could not close the app. Please press HOME button...');
-
-
     }
   }
-
-  String _validatePassword(String password) {
-    bool hasUppercase = password.contains(new RegExp(r'[A-Z]'));
-    bool hasDigits = password.contains(new RegExp(r'[0-9]'));
-    bool hasLowercase = password.contains(new RegExp(r'[a-z]'));
-    //bool hasSpecialCharacters = password.contains(new RegExp(r'[!@#$%^&*(),.?":{}|<>]'));
-    bool hasSpecialCharacters = true;
-
-    String temp;
-    setState(() {
-      if(password.length == 0){
-        passwordErrorText = "Please enter some text";
-      }else if(password.length < 9){
-        passwordErrorText = "Minimum 8 letters required";
-      }else if(hasDigits & hasUppercase & hasLowercase & hasSpecialCharacters){
-        passwordErrorText = '';
-      }else{
-        passwordErrorText = "Invalid password";
-      }
-
-    });
-
-    temp = passwordErrorText;
-    return temp;
-  }
-
 
 
   @override
@@ -130,96 +95,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
     var w = MediaQuery.of(context).size.width;
     log('height in top: $h');
 
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-
-    Widget getTextWidget(var topText, var bottomText, int index) {
-
-      widget1 = Column(
-
-        // mainAxisAlignment: MainAxisAlignment.center,
-        //crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-
-            IndexedStack(
-              //key: bottomText,
-              alignment: Alignment.topCenter,
-              index: widgetIndex[index],
-              children: <Widget>[
-                RichText(
-                  textAlign: TextAlign.center,
-                  text: new TextSpan(
-                      style: new TextStyle(
-                          fontSize: 28.0,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
-                      text: topText
-                  ),
-                ),
-                RawMaterialButton(
-                  onPressed: () {},
-                  elevation: 2.0,
-                  fillColor: Colors.green,
-                  highlightColor: Colors.white,
-                  child: new IconTheme(
-                    data: new IconThemeData(
-                        color: Colors.white),
-                    child: new Icon(Icons.check),
-                  ),
-                  //padding: EdgeInsets.all(5.0),
-                  shape: CircleBorder(),
-                )
-              ],
-            ),
-
-
-            /*RichText(
-                  textAlign: TextAlign.center,
-                  text: new TextSpan(
-                    children: <TextSpan>[
-                      new TextSpan(
-                        style: new TextStyle(
-                            fontSize: 28.0,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                        children: <TextSpan>[
-                          //, style: new TextStyle(fontWeight: FontWeight.bold, )
-                          new TextSpan(text: topText),
-
-                          new TextSpan(
-                          text: bottomText,
-                          style: new TextStyle(
-                              fontSize: 12,
-                              color: Colors.white,
-                              fontWeight: FontWeight.normal)),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),*/
-
-            RichText(
-              textAlign: TextAlign.center,
-              text: new TextSpan(
-                  text: bottomText,
-                  style: new TextStyle(
-                      fontSize: 12,
-                      color: Colors.white,
-                      fontWeight: FontWeight.normal)),
-            ),
-
-
-
-            //)
-          ]);
-
-      return widget1;
-    }
 
     return Scaffold(
         appBar: AppBar(
@@ -234,22 +109,16 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    /*Stack(
-                  children: <Widget>[*/
-                    /* ClipPath(
-                        clipper: MyCustomClipper(
-                            h, MediaQuery.of(context).size.width),*/
-                    /*child:*/ Container(
+
+                    /// Displays the top area with rounded containers
+                    Container(
                         width: MediaQuery.of(context).size.width,
                         height: h,
                         color: Colors.blue,
                         child: pw),
-                    // ),
 
-                    /*Expanded(
-                  child: Container(
-                    color: Colors.blue,
-                    child:*/
+
+                    /// Display the message with registration details
                     Align(
                         alignment: Alignment.centerLeft,
                         child: Padding(
@@ -272,8 +141,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
                                   // Note: Styles for TextSpans must be explicitly defined.
                                   // Child text spans will inherit styles from parent
                                   style: new TextStyle(
-                                      fontSize: 14.0,
-                                      color: Colors.black,
+                                      fontSize: 16.0,
+                                      color: Colors.white,
                                       fontWeight: FontWeight.bold),
                                   children: <TextSpan>[
                                     //, style: new TextStyle(fontWeight: FontWeight.bold, )
@@ -291,7 +160,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
                           ),
                         )),
 
-
+                    /// Exit app button
                     Expanded(
                         child: Align(
                           alignment: Alignment.bottomCenter,
@@ -304,22 +173,10 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
                                     side: BorderSide(color: Colors.lightBlue)),
                                 splashColor: Colors.blueAccent,
                                 color: Colors.lightBlue,
-                                onPressed: validate,
+                                onPressed: exitApp,
                                 child: Text('Exit App')),
                           ),
                         )),
-                    //),
-                    //),
-
-
-
-
-                    //
-                    /*Expanded(
-                      child: */
-
-                    //),
-
 
                   ],
                 ) //column,
@@ -327,126 +184,3 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin{
     );
   }
 }
-
-
-/*class PasswordStatus extends StatefulWidget{
-
-  static String topText = '';
-  static String bottomText = '';
-  PasswordStatus(String topText1, String bottomText1){
-    topText = topText1;
-    bottomText = bottomText1;
-  }
-
-  PasswordStatusState ps = new PasswordStatusState(topText, bottomText);
-  @override
-  PasswordStatusState createState() => ps;
-
-}*/
-
-//class PasswordStatusState extends State<PasswordStatus>{
-/*
-class PasswordStatusState extends StatelessWidget{
-
-  String topText = '';
-  String bottomText = '';
-
-  int _widgetIndex = 0;
-
-  void setWidgetIndex(int w){
-    this._widgetIndex = w;
-  }
-
-  PasswordStatusState(String topText, String bottomText){
-    this.topText = topText;
-    this.bottomText = bottomText;
-
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return Column(
-
-      // mainAxisAlignment: MainAxisAlignment.center,
-      //crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-
-          IndexedStack(
-            //key: bottomText,
-            alignment: Alignment.topCenter,
-            index: _widgetIndex,
-            children: <Widget>[
-              RichText(
-                textAlign: TextAlign.center,
-                text: new TextSpan(
-                    style: new TextStyle(
-                        fontSize: 28.0,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
-                    text: topText
-                ),
-              ),
-              RawMaterialButton(
-                onPressed: () {},
-                elevation: 2.0,
-                fillColor: Colors.green,
-                highlightColor: Colors.white,
-                child: new IconTheme(
-                  data: new IconThemeData(
-                      color: Colors.white),
-                  child: new Icon(Icons.check),
-                ),
-                //padding: EdgeInsets.all(5.0),
-                shape: CircleBorder(),
-              )
-            ],
-          ),
-
-
-          */
-/*RichText(
-                  textAlign: TextAlign.center,
-                  text: new TextSpan(
-                    children: <TextSpan>[
-                      new TextSpan(
-                        style: new TextStyle(
-                            fontSize: 28.0,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                        children: <TextSpan>[
-                          //, style: new TextStyle(fontWeight: FontWeight.bold, )
-                          new TextSpan(text: topText),
-
-                          new TextSpan(
-                          text: bottomText,
-                          style: new TextStyle(
-                              fontSize: 12,
-                              color: Colors.white,
-                              fontWeight: FontWeight.normal)),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),*//*
-
-
-          RichText(
-            textAlign: TextAlign.center,
-            text: new TextSpan(
-                text: bottomText,
-                style: new TextStyle(
-                    fontSize: 12,
-                    color: Colors.white,
-                    fontWeight: FontWeight.normal)),
-          ),
-
-
-
-          //)
-        ]);
-  }
-
-}
-*/

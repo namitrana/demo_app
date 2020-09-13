@@ -1,3 +1,5 @@
+/// Used to display the top area with rounded Container and horizontal line in each of the screen
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

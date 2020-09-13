@@ -1,3 +1,5 @@
+
+/// Used to store registration details(In-memory only) to be displayed on the last page
 class RegistrationDetails{
   static String email = 'namit_232@yahoo.com';
   static String date = '2020-09-30';
