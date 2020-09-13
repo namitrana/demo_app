@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'dart:developer';
 import 'package:demo_app/RoundedBorderDropDown.dart';
 import 'package:demo_app/Strings.dart';
+import 'dart:io' show Platform;
 
 void main() => runApp(Screen4());
 
@@ -67,6 +68,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
   ProgressWidget pw;
 
+  DateTime selectedDate = DateTime.now();
+
   @override
   void initState() {
     //isPasswordVisible = false;
@@ -92,6 +95,72 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       log("getSelectedItem()111: $time");
       return time;
     }
+  }
+
+  /// This decides which day will be enabled
+  /// This will be called every time while displaying day in calender.
+  bool _decideWhichDayToEnable(DateTime day) {
+    if ((day.isAfter(DateTime.now().subtract(Duration(days: 1))) &&
+        day.isBefore(DateTime.now().add(Duration(days: 10))))) {
+      return true;
+    }
+    return false;
+  }
+
+  /// This builds material date picker in Android
+  buildMaterialDatePicker(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2025),
+      builder: (context, child) {
+        return Theme(
+          data: ThemeData.light(),
+          child: child,
+        );
+      },
+    );
+    if (picked != null && picked != selectedDate)
+      setState(() {
+
+        selectedDate = picked;
+       // dateTextController.value = 'thai gau';
+        log("//////////////the selected date is $selectedDate");
+        dateTextController = TextEditingController()..text = getDateOnly(selectedDate.toString());
+      });
+  }
+
+  String getDateOnly(String dateTime){
+    int idx = dateTime.indexOf(" ");
+    String date = '';
+    if(idx > -1){
+      date = dateTime.substring(0, idx);
+    }
+    return date;
+  }
+  /// This builds cupertion date picker in iOS
+  buildCupertinoDatePicker(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext builder) {
+          return Container(
+            height: MediaQuery.of(context).copyWith().size.height / 3,
+            color: Colors.white,
+            child: CupertinoDatePicker(
+              mode: CupertinoDatePickerMode.date,
+              onDateTimeChanged: (picked) {
+                if (picked != null && picked != selectedDate)
+                  setState(() {
+                    selectedDate = picked;
+                  });
+              },
+              initialDateTime: selectedDate,
+              minimumYear: 2000,
+              maximumYear: 2025,
+            ),
+          );
+        });
   }
 
 
@@ -128,12 +197,17 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     }
 
     void validate() {
-      String message = '';
+      /*String message = '';
       if (time.contains('-') || time.length == 0) {
         message = "Please select time";
         showMessage(message);
       } else {
         Navigator.of(context).pushNamed('/screen4');
+      }*/
+      if(Platform.isAndroid){
+        buildMaterialDatePicker(context);
+      }else if(Platform.isAndroid){
+        buildCupertinoDatePicker(context);
       }
     }
 
